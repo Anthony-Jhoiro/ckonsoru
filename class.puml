@@ -1,0 +1,57 @@
+@startuml
+
+class App {
+    static main()
+}
+
+class ConfigLoader {
+    static String CONF_FILE
+    Properties getProperties()
+}
+
+abstract Repository {
+
+}
+
+class PostgresRepository {
+
+}
+
+class XMLRepository {
+
+}
+
+PostgresRepository --|> Repository
+
+XMLRepository --|> Repository
+
+
+class RendezVous {
+
+}
+
+class Client {
+    
+}
+
+class Menu {
+
+}
+
+class PlageHoraires {
+
+}
+
+interface UseCase {
+    void Trigger()
+}
+
+class RendezVousUseCase {
+    
+}
+
+class ClientUseCase {
+
+}
+
+@enduml
