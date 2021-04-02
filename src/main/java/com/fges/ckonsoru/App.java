@@ -6,6 +6,9 @@
 package com.fges.ckonsoru;
 
 import java.util.Properties;
+import com.fges.menu.Menu;
+import com.fges.useCase.UseCase;
+import com.fges.useCase.UseCaseTest;
 
 /**
  * Launch the App
@@ -22,6 +25,13 @@ public class App {
         Properties properties = cf.getProperties();
         System.out.println("Mode de persistence : "
                 +properties.getProperty("persistence"));
+
+        // 
+        String[] choices = {"Afficher les créneaux disponibles pour une date donnée", "Lister les rendez-vous passés, présent et à venir d un client", "Prendre un rendez-vous", "Supprimer un rendez-vous", "Quitter"};
+        UseCase[] actions = {new UseCaseTest(), new UseCaseTest(), new UseCaseTest(), new UseCaseTest()};
+        Menu menu = new Menu(choices, actions);
     }
     
 }
+
+
