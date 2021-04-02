@@ -10,7 +10,7 @@ public class Id {
      * Generate a uniq identifier
      * @return the generated identifier
      */
-    static UUID makeId() {
+    public static UUID makeId() {
         return UUID.randomUUID();
     }
 }
