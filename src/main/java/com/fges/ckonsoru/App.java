@@ -6,7 +6,7 @@
 package com.fges.ckonsoru;
 
 import java.util.Properties;
-import com.fges.menu.Menu;
+import com.fges.ckonsoru.menu.Menu;
 import com.fges.useCase.UseCase;
 import com.fges.useCase.UseCaseTest;
 
