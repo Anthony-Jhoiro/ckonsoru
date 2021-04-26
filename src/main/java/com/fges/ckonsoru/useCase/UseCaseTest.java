@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.fges.useCase;
+package com.fges.ckonsoru.usecase;
 
+/**
+ * Interface for UseCases
+ */
 public class UseCaseTest implements UseCase {
 
-    public void UseCaseTest(){
-        
-    }
+    public UseCaseTest(){
 
+    }
 
     public void trigger(){
         System.out.println("j'ai été appelé");

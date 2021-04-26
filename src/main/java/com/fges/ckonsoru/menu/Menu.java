@@ -8,7 +8,7 @@ package com.fges.ckonsoru.menu;
 import java.util.Scanner;
 import java.lang.Exception;
 import java.lang.Integer;
-import com.fges.useCase.UseCase;
+import com.fges.ckonsoru.usecase.UseCase;
 
 /**
  * Menu class
@@ -35,33 +35,36 @@ public class Menu {
 
     private void display(){
 
-        System.out.println("Actions disponibles :");
+        while(true){
+            System.out.println("Actions disponibles :");
 
-        for(int i = 0; i < this.choices.length; i++){
-            System.out.println((i + 1) + ": " + this.choices[i]);
-        }
-
-        System.out.println("Entrer un numéro d action:");
-
-        Scanner answer = new Scanner(System.in);
-        String choice = answer.nextLine();
-        int intChoice = Integer.parseInt(choice);
-
-        while(intChoice < 1 || intChoice > this.actions.length){
-
-            if(intChoice == this.actions.length + 1){
-                System.out.println("Au revoir !");
-                System.exit(0);
+            for(int i = 0; i < this.choices.length; i++){
+                System.out.println((i + 1) + ": " + this.choices[i]);
             }
 
-            System.out.println("Entrer un numéro d action Valide:");
+            System.out.println("Entrer un numéro d action:");
 
-            answer = new Scanner(System.in);
-            choice = answer.nextLine();
+            Scanner answer = new Scanner(System.in);
+            String choice = answer.nextLine();
+            int intChoice = Integer.parseInt(choice);
+
+            while(intChoice < 1 || intChoice > this.actions.length){
+
+                if(intChoice == this.actions.length + 1){
+                    System.out.println("Au revoir !");
+                    System.exit(0);
+                }
+
+                System.out.println("Entrer un numéro d action Valide:");
+
+                answer = new Scanner(System.in);
+                choice = answer.nextLine();
+            }
+
+            System.out.println("votre choix : " + choice);
+            this.actions[intChoice - 1].trigger();
         }
-
-        System.out.println("votre choix : " + choice);
-        this.actions[intChoice - 1].trigger();
+        
 
     }
     
