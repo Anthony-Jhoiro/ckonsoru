@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ckonsoru>
+    <disponibilites>
+        <disponibilite>
+            <jour>lundi</jour>
+            <debut>15:00</debut>
+            <fin>19:00</fin>
+            <veterinaire>L. Belacqua</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>mardi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>L. Belacqua</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>jeudi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>L. Belacqua</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>samedi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>L. Belacqua</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>mardi</jour>
+            <debut>14:00</debut>
+            <fin>19:00</fin>
+            <veterinaire>L. Asriel</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>mercredi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>L. Asriel</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>mercredi</jour>
+            <debut>14:00</debut>
+            <fin>19:00</fin>
+            <veterinaire>L. Asriel</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>jeudi</jour>
+            <debut>14:00</debut>
+            <fin>19:00</fin>
+            <veterinaire>L. Asriel</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>samedi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>L. Asriel</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>lundi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>M. Coulter</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>mercredi</jour>
+            <debut>15:00</debut>
+            <fin>19:00</fin>
+            <veterinaire>M. Coulter</veterinaire>
+        </disponibilite>
+        <disponibilite>
+            <jour>samedi</jour>
+            <debut>08:00</debut>
+            <fin>12:00</fin>
+            <veterinaire>M. Coulter</veterinaire>
+        </disponibilite>
+    </disponibilites>
+    <rdvs>
+        <rdv>
+            <debut>2021-03-18T14:00:00</debut>
+            <client>M. Lee</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+        <rdv>
+            <debut>2021-03-18T14:20:00</debut>
+            <client>M. Scoresby</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+        <rdv>
+            <debut>2021-03-18T17:00:00</debut>
+            <client>M. Byrnison</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+        <rdv>
+            <debut>2021-03-04T16:20:00</debut>
+            <client>M. Byrnison</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+        <rdv>
+            <debut>2021-05-27T18:20:00</debut>
+            <client>M. Byrnison</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+        <rdv>
+            <debut>2021-03-18T18:40:00</debut>
+            <client>M. Parslow</client>
+            <veterinaire>L. Asriel</veterinaire>
+        </rdv>
+    </rdvs>
+</ckonsoru>

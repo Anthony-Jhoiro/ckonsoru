@@ -1,27 +1,28 @@
 package com.fges.ckonsoru.models;
 
-/**
- * This class represents an Appointment
- * @author anthony
- */
+import java.time.LocalDateTime;
+
 public class Appointment {
-    /**
-     * Timeslot of the appointment
-     */
-    protected TimeSlot timeslot;
+    
+    LocalDateTime beginDateTime;
+    String clientName;
+    String veterinaryName;
 
-    /**
-     * Client that reserved the appointment
-     */
-    protected Client client;
+    public Appointment(LocalDateTime beginDateTime, String clientName, String veterinaryName) {
+        this.beginDateTime = beginDateTime;
+        this.clientName = clientName;
+        this.veterinaryName = veterinaryName;
+    }
 
-    /**
-     * Create an appointment from a timeslot and a client
-     * @param timeslot Timeslot of the appointment
-     * @param client Client that reserved the appointment
-     */
-    public Appointment(TimeSlot timeslot, Client client) {
-        this.timeslot = timeslot;
-        this.client = client;
+    public LocalDateTime getBeginDateTime() {
+        return beginDateTime;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public String getVeterinaryName() {
+        return veterinaryName;
     }
 }

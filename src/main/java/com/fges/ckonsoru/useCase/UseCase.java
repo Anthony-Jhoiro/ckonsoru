@@ -5,6 +5,8 @@
  */
 package com.fges.ckonsoru.usecase;
 
+import com.fges.ckonsoru.data.AppointmentRepository;
+
 /**
  * Interface for UseCases
  */
