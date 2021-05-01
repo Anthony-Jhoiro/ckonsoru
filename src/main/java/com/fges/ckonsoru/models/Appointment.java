@@ -3,10 +3,9 @@ package com.fges.ckonsoru.models;
 import java.time.LocalDateTime;
 
 public class Appointment {
-    
-    LocalDateTime beginDateTime;
-    String clientName;
-    String veterinaryName;
+    protected LocalDateTime beginDateTime;
+    protected String clientName;
+    protected String veterinaryName;
 
     public Appointment(LocalDateTime beginDateTime, String clientName, String veterinaryName) {
         this.beginDateTime = beginDateTime;
@@ -25,4 +24,15 @@ public class Appointment {
     public String getVeterinaryName() {
         return veterinaryName;
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "beginDateTime=" + beginDateTime +
+                ", clientName='" + clientName + '\'' +
+                ", veterinaryName='" + veterinaryName + '\'' +
+                '}'; // TODO string syntax
+    }
+
+
 }

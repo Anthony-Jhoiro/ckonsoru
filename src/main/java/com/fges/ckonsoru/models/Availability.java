@@ -1,23 +1,24 @@
 package com.fges.ckonsoru.models;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Availability {
-    LocalDateTime begin;
-    LocalDateTime end;
-    String veterinaryName;
+    protected LocalTime begin;
+    protected LocalTime end;
+    protected String veterinaryName;
 
-    public Availability(LocalDateTime begin, LocalDateTime end, String veterinaryName) {
+    public Availability(LocalTime begin, LocalTime end, String veterinaryName) {
         this.begin = begin;
         this.end = end;
         this.veterinaryName = veterinaryName;
     }
 
-    public LocalDateTime getBegin() {
+    public LocalTime getBegin() {
         return begin;
     }
 
-    public LocalDateTime getEnd() {
+    public LocalTime getEnd() {
         return end;
     }
 

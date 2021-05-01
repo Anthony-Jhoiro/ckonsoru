@@ -5,67 +5,61 @@
  */
 package com.fges.ckonsoru.menu;
 
-import java.util.Scanner;
-import java.lang.Exception;
-import java.lang.Integer;
+import com.fges.ckonsoru.data.AppointmentRepository;
 import com.fges.ckonsoru.usecase.UseCase;
 
+import java.util.Scanner;
+
 /**
- * Menu class
+ * Represents a Menu
  */
 public class Menu {
 
-    private String[] choices;
-    private UseCase[] actions;
-        
-    public Menu(String[] choices, UseCase[] actions){
+    /**
+     * UseCases displayed by the menu
+     */
+    private final UseCase[] actions;
 
-        if(choices.length != actions.length + 1){
-            /* throw new  Exception ("le nombre de choix et le nombre d'action doivent être le même"); */
-            System.out.println("le nombre de choix et le nombre d'action doivent être le même");
-            return;
-        }
-
-        this.choices = choices;
+    /**
+     * Create a menu with the given usecases
+     * @param actions usecases that defines the options
+     */
+    public Menu(UseCase[] actions) {
         this.actions = actions;
-
-        this.display();
-
     }
 
-    private void display(){
+    /**
+     * Display the menu
+     */
+    public void display() {
 
-        while(true){
+        int choiceIndex;
+
+        do {
             System.out.println("Actions disponibles :");
-
-            for(int i = 0; i < this.choices.length; i++){
-                System.out.println((i + 1) + ": " + this.choices[i]);
+            int i;
+            for (i = 0; i < this.actions.length; i++) {
+                System.out.println((i + 1) + ": " + this.actions[i].getChoice());
             }
-
-            System.out.println("Entrer un numéro d action:");
+            System.out.println("9. Quitter");
 
             Scanner answer = new Scanner(System.in);
-            String choice = answer.nextLine();
-            int intChoice = Integer.parseInt(choice);
 
-            while(intChoice < 1 || intChoice > this.actions.length){
+            do {
+                System.out.println("Entrer un numéro d action:");
+                String choice = answer.nextLine();
+                choiceIndex = Integer.parseInt(choice);
+            } while ((choiceIndex < 1 || choiceIndex > this.actions.length) && choiceIndex != 9);
 
-                if(intChoice == this.actions.length + 1){
-                    System.out.println("Au revoir !");
-                    System.exit(0);
-                }
 
-                System.out.println("Entrer un numéro d action Valide:");
-
-                answer = new Scanner(System.in);
-                choice = answer.nextLine();
+            if (choiceIndex != 9) {
+                System.out.println("votre choix : " + choiceIndex);
+                this.actions[choiceIndex - 1].trigger();
             }
-
-            System.out.println("votre choix : " + choice);
-            this.actions[intChoice - 1].trigger();
-        }
-        
+        // If the choice is 9 end the loop
+        } while (choiceIndex != 9);
+        System.out.println("Au revoir !");
 
     }
-    
+
 }

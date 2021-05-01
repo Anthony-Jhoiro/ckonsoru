@@ -1,15 +1,53 @@
 package com.fges.ckonsoru.data;
 
+import com.fges.ckonsoru.models.Appointment;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
+/**
+ * Represents a Repository to manage appointments
+ */
 public abstract class AppointmentRepository{
-    
-    public abstract Collection<String> getAllAppointmentsByDate(LocalDate date);
 
-    public abstract Boolean registerAppointment(LocalDate date, String doctor, String client);
+    /**
+     * Get the list of appointments on the given date from the XML database
+     * @param date LocalDate from which we wan the results
+     * @return A collection of the fetched appointments
+     */
+    public abstract Collection<Appointment> getAllAppointmentsByDate(LocalDate date);
 
-    public abstract Boolean removeAppointment(LocalDate date, String client); 
+    /**
+     * Create an appointment in the database
+     * @param appointment appointment to create
+     * @return true if the operation succeeds
+     */
+    public abstract boolean registerAppointment(Appointment appointment);
+
+    /**
+     * Remove an appointment from the database by a {@link LocalDateTime} and a client name
+     * @param datetime datetime of the appointment
+     * @param clientName client of the appointment
+     * @return true if the operation succeeds
+     */
+    public abstract boolean removeAppointment(LocalDateTime datetime, String clientName);
+
+    /**
+     * Fetch the list of appointments of the given client
+     * @param clientName name of the client
+     * @return A {@link Collection} of {@link Appointment}
+     */
+    public abstract Collection<Appointment> getAllAppointmentsByClient(String clientName);
+
+    /**
+     * Fetch the database to know if the doctor has an appointment at the given time
+     * @param datetime time of the appointment
+     * @param doctorName name of the doctor
+     * @return true if the doctor has no appointment
+     */
+    public abstract boolean isFree(LocalDateTime datetime, String doctorName);
+
 
 }
 

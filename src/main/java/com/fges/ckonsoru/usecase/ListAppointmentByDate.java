@@ -1,4 +1,4 @@
-package com.fges.ckonsoru.useCase;
+package com.fges.ckonsoru.usecase;
 
 import com.fges.ckonsoru.data.AppointmentRepository;
 
@@ -7,12 +7,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class ListAppointmentByDate implements UseCase {
+public class ListAppointmentByDate extends UseCase {
 
-    private AppointmentRepository repo;
+    private final AppointmentRepository appointmentRepository;
 
-    public ListAppointmentByDate(AppointmentRepository repo){
-        this.repo = repo;
+    public ListAppointmentByDate(AppointmentRepository appointmentRepository){
+        this.appointmentRepository = appointmentRepository;
+    }
+
+    @Override
+    public String getChoice() {
+        return "Afficher les créneaux disponibles pour une date donnée";
     }
 
     public void trigger(){
@@ -27,7 +32,7 @@ public class ListAppointmentByDate implements UseCase {
         String choice = answer.nextLine();
 
         // TODO : handle format errors
-        
+
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime date = LocalDateTime.parse(choice, timeFormatter);
 

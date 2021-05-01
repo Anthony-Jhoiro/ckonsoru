@@ -7,11 +7,11 @@ package com.fges.ckonsoru.usecase;
 
 import com.fges.ckonsoru.data.AppointmentRepository;
 
-/**
- * Interface for UseCases
- */
-public interface UseCase {
 
-    public void trigger();
+public abstract class UseCase {
+
+    public abstract String getChoice();
+
+    public abstract void trigger();
 
 }

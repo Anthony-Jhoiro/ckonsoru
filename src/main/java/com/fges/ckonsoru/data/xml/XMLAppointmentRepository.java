@@ -1,83 +1,107 @@
 package com.fges.ckonsoru.data.xml;
 
 import com.fges.ckonsoru.data.AppointmentRepository;
+import com.fges.ckonsoru.models.Appointment;
+import com.fges.ckonsoru.models.xml.XMLAppointment;
+import org.w3c.dom.Element;
 
-import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import javax.lang.model.element.Element;
-// XML dependencies
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
+/**
+ * Represents an AppointmentRepository working with an XML database (see {@link AppointmentRepository})
+ */
 public class XMLAppointmentRepository extends AppointmentRepository {
 
-    private String XMLFileName;
+    /**
+     * XML adapter used to interact with the X%ML database
+     */
+    protected final XMLAdapter adapter;
 
-    public XMLAppointmentRepository(String fileName){
-        this.XMLFileName = fileName;
+    /**
+     * Create an XMLAppointmentRepository
+     * @param adapter adapter used to interact with the XML database
+     */
+    public XMLAppointmentRepository(XMLAdapter adapter){
+        this.adapter = adapter;
     }
 
-    public Collection<String> getAllAppointmentsByDate(LocalDate date){
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        DocumentBuilder xmlbuilder;
-        Document doc = null;
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<Appointment> getAllAppointmentsByDate(LocalDate date){
+
+        List<Appointment> appointments = new ArrayList<>();
+
         String sdate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        try{
-            // charger le fichier 
-            xmlbuilder = factory.newDocumentBuilder();
-            Document xmldoc = builder.parse(this.XMLFileName);
-            // créer la requête XPATH
-            String requeteXPATH = "/ckonsoru/rdvs/rdv[starts-with(debut,'"+sdate+"')]";
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            XPathExpression expr =xpath.compile(requeteXPATH);
-            // evaluer la requête XPATH
-            NodeList nodes = (NodeList) expr.evaluate(xmldoc, XPathConstants.NODESET);
-            ArrayList<String> returnInfos;
-            returnInfos = new ArrayList<String>();
-            for(int i = 0; i < nodes.getLength(); i++){
-                Node nNode = nodes.item(i);
-                if(nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    org.w3c.dom.Element eElement = (org.w3c.dom.Element) nNode;
-                    String debut =  eElement.getElementsByTagName("debut").item(0).getTextContent();
-                    String client = eElement.getElementsByTagName("client").item(0).getTextContent();
-                    String veto = eElement.getElementsByTagName("veterinaire").item(0).getTextContent();
-                    returnInfos.add("Rendez-vous pour le client " +client + " avec " + veto + " le " + debut);
-                }
-            }
-            return returnInfos;
-        }catch(IOException | ParserConfigurationException | SAXException | XPathExpressionException e) {
-            System.err.println("Erreur à l'ouverture de la bdd xml :  " + this.XMLFileName);
-            e.printStackTrace(System.err);
+        String xpath = "/ckonsoru/rdvs/rdv[starts-with(debut,'"+sdate+"')]";
+
+        List<Element> nodes = this.adapter.find(xpath);
+
+        for(Element element: nodes) {
+            Appointment a = XMLAppointment.fromXMLElement(element);
+            appointments.add(a);
         }
+
+        return appointments;
     }
 
-    public Boolean registerAppointment(Date date, String doctor, String client){
-        return false;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<Appointment> getAllAppointmentsByClient(String clientName){
+
+        List<Appointment> appointments = new ArrayList<>();
+
+        String xpath = "/ckonsoru/rdvs/rdv[starts-with(client,'"+clientName+"')]";
+
+        List<Element> nodes = this.adapter.find(xpath);
+
+        for(Element element: nodes) {
+            Appointment a = XMLAppointment.fromXMLElement(element);
+            appointments.add(a);
+        }
+
+        return appointments;
     }
 
-    public Boolean removeAppointment(Date date, String client){
-        return false;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isFree(LocalDateTime datetime, String doctorName) {
+
+        String sdate = datetime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        String xpath = "/ckonsoru/rdvs/rdv[veterinaire='"+doctorName+"' and debut='"+sdate+"']";
+
+        return this.adapter.find(xpath).isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean registerAppointment(Appointment appointment) {
+        XMLAppointment xmlAppointment = new XMLAppointment(appointment);
+        return this.adapter.insert(xmlAppointment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean removeAppointment(LocalDateTime datetime, String clientName) {
+        String sdate = datetime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        String xpath = "/ckonsoru/rdvs/rdv[client='"+clientName+"' and debut='"+sdate+"']";
+
+        return this.adapter.remove(xpath);
+    }
 }
