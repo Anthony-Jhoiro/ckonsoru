@@ -31,10 +31,9 @@
   </build>
   <dependencies>
     <dependency>
-        <!-- https://mvnrepository.com/artifact/org.jdom/jdom -->
-        <groupId>org.jdom</groupId>
-        <artifactId>jdom</artifactId>
-        <version>2.0.2</version>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.18</version>
     </dependency>
   </dependencies>
 </project>
