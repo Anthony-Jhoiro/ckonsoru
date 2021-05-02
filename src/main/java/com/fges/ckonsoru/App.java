@@ -42,8 +42,7 @@ public class App {
             availabilityRepository = new BDDAvaibilityRepository(properties);
         }
         else if(percistence.equals("xml")){
-            String xmlfile = "src/main/java/com/fges/ckonsoru/xmlbdd/ckonsoru.xml";
-            XMLAdapter adapter = new XMLAdapter(xmlfile);
+            XMLAdapter adapter = new XMLAdapter(properties);
             appointmentRepository = new XMLAppointmentRepository(adapter);
             availabilityRepository = new XMLAvailabilityRepository(adapter);
         }

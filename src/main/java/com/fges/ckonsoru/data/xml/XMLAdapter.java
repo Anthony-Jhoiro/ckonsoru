@@ -3,6 +3,7 @@ package com.fges.ckonsoru.data.xml;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 // XML dependencies
 import javax.xml.parsers.DocumentBuilder;
@@ -40,11 +41,11 @@ public class XMLAdapter {
     /**
      * Create a XMLAdapter from a filename.
      * Parse the content of the file to load the data from the XML database (see {@link this.openXML})
-     * @param filename name of the file containing the XML database
+     * @param props project properties
      */
-    public XMLAdapter(String filename) {
-        this.xmlData = this.openXML(filename);
-        this.filename = filename;
+    public XMLAdapter(Properties props) {
+        this.filename = props.getProperty("xml.fichier");
+        this.xmlData = this.openXML(this.filename);
     }
 
     /**
