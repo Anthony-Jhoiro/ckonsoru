@@ -1,0 +1,11 @@
+disponibilité : 
+    -jour de la semaine
+    - heure de début
+    - heure de fin 
+
+rdv :
+    - debut (datetime)
+    - client name (firstname letter + lastname)
+    - veterinaire
+
+
