@@ -3,6 +3,11 @@
 ## git
 https://github.com/Anthony-Jhoiro/ckonsoru
 
+## lancer le projet
+
+Pour créer le dossier target : `mvn clean install`
+Pour lancer le projet (après avoir le dossier target) : `mvn package exec:java`
+
 ## Architecture
 
 ```
