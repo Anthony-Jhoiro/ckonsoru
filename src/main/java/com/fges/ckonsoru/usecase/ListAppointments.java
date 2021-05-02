@@ -29,8 +29,10 @@ public class ListAppointments extends UseCase {
 
         Collection<Appointment> appointments = this.appointmentRepository.getAllAppointmentsByClient(clientName);
 
+        System.out.println(appointments.size() + " rendez-vous trouvé(s) pour " + clientName);
+
         for(Appointment appointment: appointments) {
-            System.out.println(appointment);
+            System.out.println(appointment.toStringForClient());
         }
     }
 }

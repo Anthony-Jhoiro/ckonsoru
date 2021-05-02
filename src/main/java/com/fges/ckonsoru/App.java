@@ -5,18 +5,15 @@
  */
 package com.fges.ckonsoru;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.Properties;
 
 import com.fges.ckonsoru.data.AppointmentRepository;
 import com.fges.ckonsoru.data.AvailabilityRepository;
+import com.fges.ckonsoru.data.psql.BDDAppointmentRepository;
+import com.fges.ckonsoru.data.psql.BDDAvaibilityRepository;
 import com.fges.ckonsoru.data.xml.XMLAdapter;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityRepository;
 import com.fges.ckonsoru.menu.Menu;
-import com.fges.ckonsoru.models.Appointment;
 import com.fges.ckonsoru.data.xml.XMLAppointmentRepository;
 import com.fges.ckonsoru.usecase.*;
 
@@ -29,17 +26,31 @@ public class App {
     public static void main(String[] args){
 
         System.out.println("Bienvenue sur Clinique Konsoru !");
-        String xmlfile = "src/main/java/com/fges/ckonsoru/xmlbdd/ckonsoru.xml";
         
         // chargement de la configuration de la persistence
         ConfigLoader cf = new ConfigLoader();
         Properties properties = cf.getProperties();
+        String percistence = properties.getProperty("persistence");
         System.out.println("Mode de persistence : "
-                +properties.getProperty("persistence"));
+                +percistence);
 
-        XMLAdapter adapter = new XMLAdapter(xmlfile);
-        AppointmentRepository appointmentRepository = new XMLAppointmentRepository(adapter);
-        AvailabilityRepository availabilityRepository = new XMLAvailabilityRepository(adapter);
+        AppointmentRepository appointmentRepository = null;
+        AvailabilityRepository availabilityRepository = null;
+
+        if(percistence.equals("bdd")){
+            appointmentRepository = new BDDAppointmentRepository(properties);
+            availabilityRepository = new BDDAvaibilityRepository(properties);
+        }
+        else if(percistence.equals("xml")){
+            String xmlfile = "src/main/java/com/fges/ckonsoru/xmlbdd/ckonsoru.xml";
+            XMLAdapter adapter = new XMLAdapter(xmlfile);
+            appointmentRepository = new XMLAppointmentRepository(adapter);
+            availabilityRepository = new XMLAvailabilityRepository(adapter);
+        }
+        else {
+            System.out.println("le mode de persistence ne peut être que 'xml' ou 'bdd', or, il est égal à |" + percistence + "|");
+            System.exit(0);
+        }
 
         // initialating the menu
         UseCase[] actions = {

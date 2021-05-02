@@ -32,34 +32,42 @@ public class TakeAppointment extends UseCase {
         Scanner answer = new Scanner(System.in);
         String timeString = answer.nextLine();
         // check timeString
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
-        LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
+        try {
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
+            LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
 
-        System.out.println("Indiquer le nom du vétérinaire");
-        String veterinaryName = answer.nextLine();
-        // check veterinaryName
+            System.out.println("Indiquer le nom du vétérinaire");
+            String veterinaryName = answer.nextLine();
+            // check veterinaryName
 
-        System.out.println("Indiquer le nom du client");
-        String clientName = answer.nextLine();
-        // check clientName
+            System.out.println("Indiquer le nom du client");
+            String clientName = answer.nextLine();
+            // check clientName
 
 
-        // check available
-        boolean available = availabilityRepository.isAvailable(date, veterinaryName);
-        if (!available) {
-            System.out.println("The veterinary is not available or does not exists");
-            return;
+            // check available
+            boolean available = availabilityRepository.isAvailable(date, veterinaryName);
+            if (!available) {
+                System.out.println("The veterinary is not available or does not exists");
+                return;
+            }
+
+            // Check free
+            boolean free = this.appointmentRepository.isFree(date, veterinaryName);
+            if (!free) {
+                System.out.println("The timeslot is taken.");
+                return;
+            }
+
+            Appointment appointment = new Appointment(date, clientName, veterinaryName);
+            if(this.appointmentRepository.registerAppointment(appointment)){
+                System.out.println("Un rendez-vous pour " + clientName + " avec " + veterinaryName + " a été reservé le " + appointment.toStringDateFormat());
+            }
         }
-
-        // Check free
-        boolean free = this.appointmentRepository.isFree(date, veterinaryName);
-        if (!free) {
-            System.out.println("The timeslot is taken.");
-            return;
+        catch(Exception e){
+            System.out.println("problème de parsing de la date :");
+            System.out.println(e.getMessage());
         }
-
-        Appointment appointment = new Appointment(date, clientName, veterinaryName);
-        this.appointmentRepository.registerAppointment(appointment);
 
 
 
