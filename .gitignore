@@ -2,4 +2,5 @@
 .vscode
 
 target
+target/maven-status
 bin

@@ -25,6 +25,14 @@ public class Appointment {
         return veterinaryName;
     }
 
+    public String toStringForClient(){
+        return this.toStringDateFormat() + " avec " + this.veterinaryName;
+    }
+
+    public String toStringDateFormat(){
+        return String.format("%02d",this.beginDateTime.getDayOfMonth()) + "/" + String.format("%02d", this.beginDateTime.getMonth().getValue()) + "/" + this.beginDateTime.getYear() + " " + String.format("%02d", this.beginDateTime.getHour()) + ":" + String.format("%02d", this.beginDateTime.getMinute());
+    }
+
     @Override
     public String toString() {
         return "Appointment{" +

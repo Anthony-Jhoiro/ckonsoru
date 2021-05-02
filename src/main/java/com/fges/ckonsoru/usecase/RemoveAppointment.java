@@ -27,16 +27,22 @@ public class RemoveAppointment extends UseCase{
         Scanner answer = new Scanner(System.in);
         String timeString = answer.nextLine();
         // check timeString
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
-        LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
+        try {
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
+            LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
 
-        System.out.println("Indiquer le nom du client");
-        String clientName = answer.nextLine();
+            System.out.println("Indiquer le nom du client");
+            String clientName = answer.nextLine();
 
-        if (this.appointmentRepository.removeAppointment(date, clientName)) {
-            System.out.println("Un rendez-vous pour "+ clientName +" le  "+ timeString +" a été supprimé");
-        } else {
-            System.out.println("Une erreur est survenue pendant la supperssion du rendez-vous");
+            if (this.appointmentRepository.removeAppointment(date, clientName)) {
+                System.out.println("Un rendez-vous pour "+ clientName +" le  "+ timeString +" a été supprimé");
+            } else {
+                System.out.println("Une erreur est survenue pendant la supperssion du rendez-vous");
+            }
+        }
+        catch(Exception e){
+            System.out.println("problème de parsing de la date :");
+            System.out.println(e.getMessage());
         }
     }
 }
