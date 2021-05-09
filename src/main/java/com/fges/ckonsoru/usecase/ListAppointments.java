@@ -1,6 +1,6 @@
 package com.fges.ckonsoru.usecase;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.models.Appointment;
 
 import java.util.Collection;
@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class ListAppointments extends UseCase {
 
-    protected AppointmentRepository appointmentRepository;
+    protected AppointmentDAO appointmentDAO;
 
-    public ListAppointments(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
+    public ListAppointments(AppointmentDAO appointmentDAO) {
+        this.appointmentDAO = appointmentDAO;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ListAppointments extends UseCase {
         String clientName = answer.nextLine();
         // Check name with regex
 
-        Collection<Appointment> appointments = this.appointmentRepository.getAllAppointmentsByClient(clientName);
+        Collection<Appointment> appointments = this.appointmentDAO.getAllAppointmentsByClient(clientName);
 
         System.out.println(appointments.size() + " rendez-vous trouvé(s) pour " + clientName);
 

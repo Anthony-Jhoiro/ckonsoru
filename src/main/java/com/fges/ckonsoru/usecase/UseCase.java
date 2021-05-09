@@ -5,13 +5,20 @@
  */
 package com.fges.ckonsoru.usecase;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
-
-
+/**
+ * Represents a USECase used by the Menu class as an action. A UseCase has a choice string and a trigger method.
+ */
 public abstract class UseCase {
 
+    /**
+     * Get the use case choice string
+     * @return a string representing the UseCase choice.
+     */
     public abstract String getChoice();
 
+    /**
+     * Called to trigger the UseCase
+     */
     public abstract void trigger();
 
 }
