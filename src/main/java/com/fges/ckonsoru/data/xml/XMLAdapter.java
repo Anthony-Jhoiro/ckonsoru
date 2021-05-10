@@ -62,7 +62,8 @@ public class XMLAdapter {
             // Try loading the file and return it if it succeeds
             xmlbuilder = factory.newDocumentBuilder();
             return  xmlbuilder.parse(filename);
-        }catch(IOException | ParserConfigurationException | SAXException e) {
+        }
+        catch(IOException | ParserConfigurationException | SAXException e) {
             // Error parsing or opening the file
             System.err.println("Can not open database : " + filename);
             e.printStackTrace(System.err);

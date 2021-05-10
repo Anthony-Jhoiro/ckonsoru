@@ -5,7 +5,6 @@
  */
 package com.fges.ckonsoru.menu;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
 import com.fges.ckonsoru.usecase.UseCase;
 
 import java.util.Scanner;

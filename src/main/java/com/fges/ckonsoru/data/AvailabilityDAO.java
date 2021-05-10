@@ -9,13 +9,13 @@ import java.util.Collection;
 /**
  * Represents a repository to manage veterinaries Availabilities
  */
-public abstract class AvailabilityRepository {
+public interface AvailabilityDAO {
     /**
      * Fetch Availabilities from the database for a given day
      * @param day day from which we want the availabilities
      * @return a collection of Availabilities representing the fetched data
      */
-    public abstract Collection<Availability> getAvailabilityByDay(DayOfWeek day);
+    Collection<Availability> getAvailabilityByDay(DayOfWeek day);
 
     /**
      * Fetch the database to know if the veterinary is available at the given time
@@ -23,5 +23,5 @@ public abstract class AvailabilityRepository {
      * @param veterinaryName veterinary name
      * @return true if the veterinary is available
      */
-    public abstract boolean isAvailable(LocalDateTime datetime, String veterinaryName);
+    boolean isAvailable(LocalDateTime datetime, String veterinaryName);
 }

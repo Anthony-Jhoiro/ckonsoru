@@ -1,6 +1,6 @@
 package com.fges.ckonsoru.data.xml;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.models.Appointment;
 import com.fges.ckonsoru.models.xml.XMLAppointment;
 import org.w3c.dom.Element;
@@ -13,9 +13,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Represents an AppointmentRepository working with an XML database (see {@link AppointmentRepository})
+ * Represents an XMLAppointmentDAO working with an XML database (see {@link AppointmentDAO})
  */
-public class XMLAppointmentRepository extends AppointmentRepository {
+public class XMLAppointmentDAO implements AppointmentDAO {
 
     /**
      * XML adapter used to interact with the X%ML database
@@ -26,7 +26,7 @@ public class XMLAppointmentRepository extends AppointmentRepository {
      * Create an XMLAppointmentRepository
      * @param adapter adapter used to interact with the XML database
      */
-    public XMLAppointmentRepository(XMLAdapter adapter){
+    public XMLAppointmentDAO(XMLAdapter adapter){
         this.adapter = adapter;
     }
 

@@ -1,25 +1,24 @@
 package com.fges.ckonsoru.usecase;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
-import com.fges.ckonsoru.data.AvailabilityRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
+import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.models.Appointment;
 import com.fges.ckonsoru.models.Availability;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Scanner;
 
 public class ListFreeTimeslotsByDate extends UseCase {
-    protected AvailabilityRepository availabilityRepository;
-    protected AppointmentRepository appointmentRepository;
+    protected AvailabilityDAO availabilityDAO;
+    protected AppointmentDAO appointmentDAO;
 
-    public ListFreeTimeslotsByDate(AvailabilityRepository availabilityRepository, AppointmentRepository appointmentRepository) {
-        this.availabilityRepository = availabilityRepository;
-        this.appointmentRepository = appointmentRepository;
+    public ListFreeTimeslotsByDate(AvailabilityDAO availabilityDAO, AppointmentDAO appointmentDAO) {
+        this.availabilityDAO = availabilityDAO;
+        this.appointmentDAO = appointmentDAO;
     }
 
     @Override
@@ -38,9 +37,9 @@ public class ListFreeTimeslotsByDate extends UseCase {
 
         DayOfWeek day = date.getDayOfWeek();
 
-        Collection<Availability> availabilities = availabilityRepository.getAvailabilityByDay(day);
+        Collection<Availability> availabilities = availabilityDAO.getAvailabilityByDay(day);
 
-        Collection<Appointment> appointments = appointmentRepository.getAllAppointmentsByDate(date);
+        Collection<Appointment> appointments = appointmentDAO.getAllAppointmentsByDate(date);
 
         for (Availability availability: availabilities) {
             LocalTime endTime = availability.getEnd();
