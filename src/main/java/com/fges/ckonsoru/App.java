@@ -11,7 +11,7 @@ import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.data.psql.BDDAppointmentDAO;
 import com.fges.ckonsoru.data.psql.BDDAvaibilityDAO;
-import com.fges.ckonsoru.data.xml.XMLAdapter;
+import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
 import com.fges.ckonsoru.menu.Menu;
@@ -37,14 +37,15 @@ public class App {
         AppointmentDAO appointmentDAO = null;
         AvailabilityDAO availabilityDAO = null;
 
+        XMLAdapterSingleton.init(properties);
+
         if(percistence.equals("bdd")){
             appointmentDAO = new BDDAppointmentDAO(properties);
             availabilityDAO = new BDDAvaibilityDAO(properties);
         }
         else if(percistence.equals("xml")){
-            XMLAdapter adapter = new XMLAdapter(properties);
-            appointmentDAO = new XMLAppointmentDAO(adapter);
-            availabilityDAO = new XMLAvailabilityDAO(adapter);
+            appointmentDAO = new XMLAppointmentDAO();
+            availabilityDAO = new XMLAvailabilityDAO();
         }
         else {
             System.out.println("le mode de persistence ne peut être que 'xml' ou 'bdd', or, il est égal à |" + percistence + "|");

@@ -20,14 +20,14 @@ public class XMLAppointmentDAO implements AppointmentDAO {
     /**
      * XML adapter used to interact with the X%ML database
      */
-    protected final XMLAdapter adapter;
+    protected final XMLAdapterSingleton adapter;
 
     /**
      * Create an XMLAppointmentRepository
      * @param adapter adapter used to interact with the XML database
      */
-    public XMLAppointmentDAO(XMLAdapter adapter){
-        this.adapter = adapter;
+    public XMLAppointmentDAO(){
+        this.adapter = XMLAdapterSingleton.getInstance();
     }
 
 

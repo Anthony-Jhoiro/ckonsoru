@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 /**
  * This class is an XML adapter to interact with the XML database
  */
-public class XMLAdapter {
+public class XMLAdapterSingleton {
     /**
      * Document representing the database content
      */
@@ -36,16 +36,27 @@ public class XMLAdapter {
     /**
      * filename where the database is stored
      */
-    protected String filename;
+    protected static  String filename;
+
+    public static void init(Properties props) {
+        filename = props.getProperty("xml.fichier");
+    }
+
+    private static XMLAdapterSingleton instance;
 
     /**
      * Create a XMLAdapter from a filename.
      * Parse the content of the file to load the data from the XML database (see {@link this.openXML})
-     * @param props project properties
      */
-    public XMLAdapter(Properties props) {
-        this.filename = props.getProperty("xml.fichier");
-        this.xmlData = this.openXML(this.filename);
+    private XMLAdapterSingleton() {
+        this.xmlData = this.openXML(filename);
+    }
+
+    public static XMLAdapterSingleton getInstance() {
+        if (instance == null) {
+            instance = new XMLAdapterSingleton();
+        }
+        return instance;
     }
 
     /**
