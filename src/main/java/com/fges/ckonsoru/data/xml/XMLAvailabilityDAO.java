@@ -20,14 +20,13 @@ public class XMLAvailabilityDAO implements AvailabilityDAO {
     /**
      * XML adapter used to interact with the X%ML database
      */
-    protected final XMLAdapter adapter;
+    protected final XMLAdapterSingleton adapter;
 
     /**
      * Create an XMLAvailabilityRepository
-     * @param adapter adapter used to interact with the XML database
      */
-    public XMLAvailabilityDAO(XMLAdapter adapter){
-        this.adapter = adapter;
+    public XMLAvailabilityDAO(){
+        this.adapter = XMLAdapterSingleton.getInstance();
     }
 
 
