@@ -4,20 +4,19 @@ import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
-import com.fges.ckonsoru.data.AvailabilityRepository;
+import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.models.Availability;
 
-public class BDDAvaibilityRepository extends AvailabilityRepository {
+public class BDDAvaibilityDAO implements AvailabilityDAO {
 
     Properties props;
     String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimannche"};
 
-    public BDDAvaibilityRepository(Properties props){
+    public BDDAvaibilityDAO(Properties props){
         this.props = props;
     }
 
@@ -46,7 +45,7 @@ public class BDDAvaibilityRepository extends AvailabilityRepository {
         }
 
         ArrayList<Availability> availabilities = new ArrayList<>();
-        Availability avRes = null;
+        Availability avRes;
 
         try {
             PreparedStatement stmt = db.prepareStatement("SELECT * FROM disponibilite INNER JOIN veterinaire ON veterinaire.vet_id = disponibilite.vet_id INNER JOIN jour ON disponibilite.dis_jour = jour.jou_id WHERE jou_libelle = ?");

@@ -1,16 +1,16 @@
 package com.fges.ckonsoru.usecase;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class RemoveAppointment extends UseCase{
-    protected AppointmentRepository appointmentRepository;
+    protected AppointmentDAO appointmentDAO;
 
-    public RemoveAppointment(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
+    public RemoveAppointment(AppointmentDAO appointmentDAO) {
+        this.appointmentDAO = appointmentDAO;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RemoveAppointment extends UseCase{
             System.out.println("Indiquer le nom du client");
             String clientName = answer.nextLine();
 
-            if (this.appointmentRepository.removeAppointment(date, clientName)) {
+            if (this.appointmentDAO.removeAppointment(date, clientName)) {
                 System.out.println("Un rendez-vous pour "+ clientName +" le  "+ timeString +" a été supprimé");
             } else {
                 System.out.println("Une erreur est survenue pendant la supperssion du rendez-vous");

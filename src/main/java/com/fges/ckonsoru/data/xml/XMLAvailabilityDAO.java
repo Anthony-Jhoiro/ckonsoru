@@ -1,15 +1,12 @@
 package com.fges.ckonsoru.data.xml;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
-import com.fges.ckonsoru.data.AvailabilityRepository;
+import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.models.Availability;
 import com.fges.ckonsoru.models.xml.XMLAvailability;
 import org.w3c.dom.Element;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,20 +14,19 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Represents an AvailabilityRepository working with an XML database (see {@link AvailabilityRepository})
+ * Represents an AvailabilityRepository working with an XML database (see {@link AvailabilityDAO})
  */
-public class XMLAvailabilityRepository extends AvailabilityRepository {
+public class XMLAvailabilityDAO implements AvailabilityDAO {
     /**
      * XML adapter used to interact with the X%ML database
      */
-    protected final XMLAdapter adapter;
+    protected final XMLAdapterSingleton adapter;
 
     /**
      * Create an XMLAvailabilityRepository
-     * @param adapter adapter used to interact with the XML database
      */
-    public XMLAvailabilityRepository(XMLAdapter adapter){
-        this.adapter = adapter;
+    public XMLAvailabilityDAO(){
+        this.adapter = XMLAdapterSingleton.getInstance();
     }
 
 

@@ -1,7 +1,7 @@
 package com.fges.ckonsoru.usecase;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
-import com.fges.ckonsoru.data.AvailabilityRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
+import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.models.Appointment;
 
 import java.time.LocalDateTime;
@@ -10,13 +10,13 @@ import java.util.Scanner;
 
 public class TakeAppointment extends UseCase {
 
-    protected AppointmentRepository appointmentRepository;
+    protected AppointmentDAO appointmentDAO;
 
-    protected AvailabilityRepository availabilityRepository;
+    protected AvailabilityDAO availabilityDAO;
 
-    public TakeAppointment(AvailabilityRepository availabilityRepository, AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.availabilityRepository = availabilityRepository;
+    public TakeAppointment(AvailabilityDAO availabilityDAO, AppointmentDAO appointmentDAO) {
+        this.appointmentDAO = appointmentDAO;
+        this.availabilityDAO = availabilityDAO;
     }
 
     @Override
@@ -46,21 +46,21 @@ public class TakeAppointment extends UseCase {
 
 
             // check available
-            boolean available = availabilityRepository.isAvailable(date, veterinaryName);
+            boolean available = availabilityDAO.isAvailable(date, veterinaryName);
             if (!available) {
                 System.out.println("The veterinary is not available or does not exists");
                 return;
             }
 
             // Check free
-            boolean free = this.appointmentRepository.isFree(date, veterinaryName);
+            boolean free = this.appointmentDAO.isFree(date, veterinaryName);
             if (!free) {
                 System.out.println("The timeslot is taken.");
                 return;
             }
 
             Appointment appointment = new Appointment(date, clientName, veterinaryName);
-            if(this.appointmentRepository.registerAppointment(appointment)){
+            if(this.appointmentDAO.registerAppointment(appointment)){
                 System.out.println("Un rendez-vous pour " + clientName + " avec " + veterinaryName + " a été reservé le " + appointment.toStringDateFormat());
             }
         }

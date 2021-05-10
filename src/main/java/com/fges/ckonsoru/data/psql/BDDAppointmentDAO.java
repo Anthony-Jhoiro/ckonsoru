@@ -1,18 +1,16 @@
 package com.fges.ckonsoru.data.psql;
 
 import java.sql.*;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
-import com.fges.ckonsoru.data.AppointmentRepository;
+import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.models.Appointment;
 
-public class BDDAppointmentRepository extends AppointmentRepository  {
+public class BDDAppointmentDAO implements AppointmentDAO {
 
     Properties props;
 
@@ -20,7 +18,7 @@ public class BDDAppointmentRepository extends AppointmentRepository  {
      * Set the object with the props property
      * @param props properties of the app to get bdd credentials
      */
-    public BDDAppointmentRepository(Properties props){
+    public BDDAppointmentDAO(Properties props){
         this.props = props;
     }
 
@@ -53,7 +51,7 @@ public class BDDAppointmentRepository extends AppointmentRepository  {
         }
 
         ArrayList<Appointment> appointments = new ArrayList<>();
-        Appointment appRes = null;
+        Appointment appRes;
 
         try {
             PreparedStatement stmt = db.prepareStatement("SELECT * FROM rendezvous WHERE rv_debut >= ?::date AND rv_debut < (?::date + '1 day'::interval)");
@@ -90,7 +88,7 @@ public class BDDAppointmentRepository extends AppointmentRepository  {
             return false;
         }
 
-        int count = 0;
+        int count;
 
         try {
             PreparedStatement stmt = db.prepareStatement("INSERT INTO rendezvous (vet_id, rv_debut, rv_client) VALUES((SELECT vet_id FROM veterinaire WHERE vet_nom = ?), ?, ?)");
@@ -127,7 +125,7 @@ public class BDDAppointmentRepository extends AppointmentRepository  {
             return false;
         }
 
-        int count = 0;
+        int count;
 
         try {
             PreparedStatement stmt = db.prepareStatement("DELETE FROM rendezvous r WHERE r.rv_debut = ? AND r.rv_client = ?");
@@ -163,7 +161,7 @@ public class BDDAppointmentRepository extends AppointmentRepository  {
         }
 
         ArrayList<Appointment> appointments = new ArrayList<>();
-        Appointment appRes = null;
+        Appointment appRes;
 
         try {
             PreparedStatement stmt = db.prepareStatement("SELECT * FROM rendezvous r INNER JOIN veterinaire v ON v.vet_id = r.vet_id WHERE r.rv_client = ?;");
