@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.AvailabilityDAO;
+import com.fges.ckonsoru.data.psql.BDDAdapterSingleton;
 import com.fges.ckonsoru.data.psql.BDDAppointmentDAO;
 import com.fges.ckonsoru.data.psql.BDDAvaibilityDAO;
 import com.fges.ckonsoru.data.xml.XMLAdapter;
@@ -38,8 +39,10 @@ public class App {
         AvailabilityDAO availabilityDAO = null;
 
         if(percistence.equals("bdd")){
-            appointmentDAO = new BDDAppointmentDAO(properties);
-            availabilityDAO = new BDDAvaibilityDAO(properties);
+            BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
+            adapterSingleton.init(properties.getProperty("bdd.url"), properties.getProperty("bdd.login"), properties.getProperty("bdd.mdp"));
+            appointmentDAO = new BDDAppointmentDAO(adapterSingleton);
+            availabilityDAO = new BDDAvaibilityDAO(adapterSingleton);
         }
         else if(percistence.equals("xml")){
             XMLAdapter adapter = new XMLAdapter(properties);

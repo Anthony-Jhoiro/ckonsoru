@@ -1,44 +1,35 @@
 package com.fges.ckonsoru.data.psql;
 
-import com.fges.ckonsoru.models.Availability;
-import com.fges.ckonsoru.models.xml.XMLFriendly;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.xpath.*;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
-public class BDDAdapterSingloton {
+public class BDDAdapterSingleton {
 
-    static private BDDAdapterSingloton instance;
+    static private BDDAdapterSingleton instance;
     private Connection db;
     private String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimannche"};
 
-    private BDDAdapterSingloton(){  }
+    private BDDAdapterSingleton(){  }
 
-    public BDDAdapterSingloton getInstance(){
-        if(BDDAdapterSingloton.instance != null){
-            BDDAdapterSingloton.instance = new BDDAdapterSingloton();
+    public static BDDAdapterSingleton getInstance(){
+        if(BDDAdapterSingleton.instance != null){
+            BDDAdapterSingleton.instance = new BDDAdapterSingleton();
         }
 
-        return BDDAdapterSingloton.instance;
+        return BDDAdapterSingleton.instance;
     }
 
     public void init(String bddUrl, String bddUser, String bddPassword) {
         try {
-            BDDAdapterSingloton.instance.db = DriverManager.getConnection(bddUrl, bddUser, bddPassword);
+            BDDAdapterSingleton.instance.db = DriverManager.getConnection(bddUrl, bddUser, bddPassword);
         } catch (SQLException error) {
             System.out.println(error.getMessage());
-            BDDAdapterSingloton.instance.db = null;
+            BDDAdapterSingleton.instance.db = null;
         }
     }
 
@@ -48,7 +39,7 @@ public class BDDAdapterSingloton {
      * @param parameters sql parameters to set to the query
      * @return A resultSet 
      */
-    ResultSet find(String query, ArrayList parameters) {
+    ResultSet find(String query, ArrayList parameters) throws SQLException {
         try {
             PreparedStatement stmt = db.prepareStatement(query);
             int cpt = 1;
@@ -87,9 +78,7 @@ public class BDDAdapterSingloton {
             return rs;
         }
         catch (SQLException error){
-            System.out.println("avaibality.getAvailabilityByDay :");
-            System.out.println(error.getMessage());
-            return null;
+            throw error;
         }
     }
 
@@ -99,7 +88,7 @@ public class BDDAdapterSingloton {
      * @param parameters sql parameters to set to the query
      * @return A boolean which indicate the success
      */
-    boolean update(String query, ArrayList parameters) {
+    boolean update(String query, ArrayList parameters) throws SQLException {
         try {
             PreparedStatement stmt = db.prepareStatement(query);
             int cpt = 1;
@@ -138,9 +127,7 @@ public class BDDAdapterSingloton {
             return insertedCount > 0;
         }
         catch (SQLException error){
-            System.out.println("avaibality.getAvailabilityByDay :");
-            System.out.println(error.getMessage());
-            return false;
+            throw error;
         }
     }
 
