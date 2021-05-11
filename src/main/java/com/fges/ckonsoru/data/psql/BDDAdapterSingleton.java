@@ -12,12 +12,12 @@ public class BDDAdapterSingleton {
 
     static private BDDAdapterSingleton instance;
     private Connection db;
-    private String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimannche"};
+    private String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"};
 
     private BDDAdapterSingleton(){  }
 
     public static BDDAdapterSingleton getInstance(){
-        if(BDDAdapterSingleton.instance != null){
+        if(BDDAdapterSingleton.instance == null){
             BDDAdapterSingleton.instance = new BDDAdapterSingleton();
         }
 

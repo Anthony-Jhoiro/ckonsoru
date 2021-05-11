@@ -34,7 +34,7 @@ public class BDDAvaibilityDAO implements AvailabilityDAO {
         ArrayList<Availability> availabilities = new ArrayList<>();
         Availability avRes;
 
-        ArrayList params = new ArrayList();
+        ArrayList<Object> params = new ArrayList<Object>();
         params.add(day);
 
         try {
