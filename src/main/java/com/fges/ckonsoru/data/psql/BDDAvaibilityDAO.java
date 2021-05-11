@@ -4,8 +4,10 @@ import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Properties;
 
 import com.fges.ckonsoru.data.AvailabilityDAO;
@@ -34,11 +36,11 @@ public class BDDAvaibilityDAO implements AvailabilityDAO {
         ArrayList<Availability> availabilities = new ArrayList<>();
         Availability avRes;
 
-        ArrayList params = new ArrayList();
-        params.add(day);
+        ArrayList<Object> params = new ArrayList<Object>();
+        params.add(day.getDisplayName(TextStyle.FULL, Locale.FRANCE));
 
         try {
-            ResultSet rs = this.adapterSingleton.find("SELECT * FROM disponibilite INNER JOIN veterinaire ON veterinaire.vet_id = disponibilite.vet_id INNER JOIN jour ON disponibilite.dis_jour = jour.jou_id WHERE jou_libelle = ?", params);
+            ResultSet rs = this.adapterSingleton.find("SELECT * FROM disponibilite INNER JOIN veterinaire ON veterinaire.vet_id = disponibilite.vet_id INNER JOIN jour ON disponibilite.dis_jour = jour.jou_id WHERE jou_libelle = ?::varchar", params);
 
             while (rs.next()){
 
@@ -66,16 +68,17 @@ public class BDDAvaibilityDAO implements AvailabilityDAO {
     @Override
     public boolean isAvailable(LocalDateTime datetime, String veterinaryName) {
 
-        ArrayList params = new ArrayList();
+        ArrayList<Object> params = new ArrayList<Object>();
         params.add(datetime.toLocalTime());
         params.add(datetime.toLocalTime());
         params.add(veterinaryName);
-        params.add(datetime.getDayOfWeek());
+        params.add(datetime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.FRANCE));
 
         int count = 0;
 
         try {
-            ResultSet rs = this.adapterSingleton.find("SELECT COUNT(*) AS rowcount FROM disponibilite d WHERE d.dis_debut <= ? AND d.dis_fin >= ?  AND d.vet_id = (SELECT vet_id FROM veterinaire v WHERE v.vet_nom = ?) AND d.dis_jour = (SELECT jou_id FROM jour j WHERE j.jou_libelle = ?)", params);
+            ResultSet rs = this.adapterSingleton.find("SELECT COUNT(*) AS rowcount FROM disponibilite d WHERE d.dis_debut <= ?::time AND d.dis_fin >= ?::time" +
+                    "  AND d.vet_id = (SELECT vet_id FROM veterinaire v WHERE v.vet_nom = ?::varchar) AND d.dis_jour = (SELECT jou_id FROM jour j WHERE j.jou_libelle = ?::varchar)", params);
 
             if(rs.next()){
                 count = rs.getInt("rowcount");
@@ -84,6 +87,7 @@ public class BDDAvaibilityDAO implements AvailabilityDAO {
             rs.close();
         }
         catch (SQLException error){
+            // TODO : no print inside service
             System.out.println("avaibility.isAvailable :");
             System.out.println(error.getMessage());
             return false;
