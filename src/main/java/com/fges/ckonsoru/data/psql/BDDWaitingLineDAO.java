@@ -33,7 +33,11 @@ public class BDDWaitingLineDAO  implements WaitingLineDAO {
         params.add(waitingLineSpot.getRequestedDate());
 
 
-        return this.adapterSingleton.update("INSERT INTO listeattente (la_client, la_numtel, la_dateauplustard, la_datedemande) VALUES (?:varchar, ?:varchar, ?:timestamp, ?:timestamp)", params);
+        return this.adapterSingleton.update("INSERT INTO " +
+                "listeattente (la_client, la_numtel, " +
+                "la_dateauplustard, la_datedemande) " +
+                "VALUES (?::varchar, ?::varchar, " +
+                "?::timestamp, ?::timestamp)", params);
     }
 
     @Override
@@ -79,11 +83,12 @@ public class BDDWaitingLineDAO  implements WaitingLineDAO {
         params.add(localDateTime);
 
         // Get client id
-        ResultSet rs = this.adapterSingleton.find("SELECT la_id\n" +
-                "FROM listeAttente\n" +
-                "WHERE ?::date <= la_dateAuPlusTard\n" +
-                "AND la_creneauPropose IS NULL\n" +
-                "ORDER BY la_dateDemande ASC\n" +
+        ResultSet rs = this.adapterSingleton.find("SELECT" +
+                " listeAttente.la_id " +
+                "FROM listeAttente " +
+                "WHERE ?::date <= la_dateAuPlusTard " +
+                "AND la_creneauPropose IS NULL " +
+                "ORDER BY la_dateDemande ASC " +
                 "LIMIT 1;", params);
 
         if (rs.next()) {
@@ -94,8 +99,8 @@ public class BDDWaitingLineDAO  implements WaitingLineDAO {
 
             return this.adapterSingleton.update("UPDATE listeAttente\n" +
                     "\tSET la_creneauPropose = ?::timestamp\n" +
-                    "FROM listeAttente as la\n" +
-                    "WHERE la_id = ?::integer", params);
+                    "WHERE listeAttente.la_id = " +
+                    "?::integer", params);
         }
         return false;
 

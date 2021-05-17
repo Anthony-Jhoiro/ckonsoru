@@ -2,6 +2,7 @@ package com.fges.ckonsoru.usecase;
 
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.CancellationDAO;
+import com.fges.ckonsoru.data.WaitingLineDAO;
 
 import java.sql.SQLException;
 import java.time.Duration;
@@ -11,11 +12,13 @@ import java.util.Scanner;
 
 public class RemoveAppointmentV2 extends RemoveAppointment{
 
-    CancellationDAO cancellationDAO;
+    protected CancellationDAO cancellationDAO;
+    protected WaitingLineDAO waitingLineDAO;
 
-    public RemoveAppointmentV2(AppointmentDAO appointmentDAO, CancellationDAO cancellationDAO) {
+    public RemoveAppointmentV2(AppointmentDAO appointmentDAO, CancellationDAO cancellationDAO, WaitingLineDAO waitingLineDAO) {
         super(appointmentDAO);
         this.cancellationDAO = cancellationDAO;
+        this.waitingLineDAO = waitingLineDAO;
     }
 
     @Override
@@ -63,6 +66,15 @@ public class RemoveAppointmentV2 extends RemoveAppointment{
                                 "est survenue lors du " +
                                 "traçage de l'annulation");
                     }
+                }
+
+                try{
+                    this.waitingLineDAO.updateWaitingLine(date);
+                }
+                catch(Exception error){
+                    System.out.println("problème dans la " +
+                            "mise à jour de la liste " +
+                            "d'attente");
                 }
 
             } else {
