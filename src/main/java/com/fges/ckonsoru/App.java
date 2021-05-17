@@ -61,7 +61,7 @@ public class App {
 
         // initialating the menu
         UseCase[] actions = {
-                new InitWeek(appointmentDAO, availabilityDAO),
+                new InitWeek(appointmentDAO, timeslotDAO),
                 new ListFreeTimeslotsByDate(timeslotDAO),
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
