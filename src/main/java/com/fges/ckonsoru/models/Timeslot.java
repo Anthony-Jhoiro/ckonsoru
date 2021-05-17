@@ -24,7 +24,7 @@ public class Timeslot {
     @Override
     public String toString(){
         DateTimeFormatter timeFormatter =
-                DateTimeFormatter.ofPattern("d/MM/yyyy " +
+                DateTimeFormatter.ofPattern("dd/MM/yyyy " +
                         "HH:mm");
         return this.veterinaryName + " : " + this.debut.format(timeFormatter);
     }

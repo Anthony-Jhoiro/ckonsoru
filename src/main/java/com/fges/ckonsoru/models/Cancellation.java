@@ -1,14 +1,16 @@
 package com.fges.ckonsoru.models;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Cancellation {
     private String client;
     private LocalDateTime timeslot;
     private String veterinary;
-    private long delay;
+    private LocalTime delay;
 
-    public Cancellation(String client, LocalDateTime timeslot, String veterinary, long delay) {
+    public Cancellation(String client, LocalDateTime timeslot, String veterinary, LocalTime delay) {
         this.client = client;
         this.timeslot = timeslot;
         this.veterinary = veterinary;
@@ -27,7 +29,17 @@ public class Cancellation {
         return veterinary;
     }
 
-    public long getDelay() {
+    public LocalTime getDelay() {
         return delay;
+    }
+
+    @Override
+    public String toString(){
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy " +
+                        "HH:mm");
+        DateTimeFormatter delayFormatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss");
+        return this.client + " le " + this.timeslot.format(dateFormatter) + " (" + this.delay.format(delayFormatter) + " avant)";
     }
 }

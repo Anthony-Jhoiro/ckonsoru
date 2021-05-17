@@ -7,10 +7,7 @@ package com.fges.ckonsoru;
 
 import java.util.Properties;
 
-import com.fges.ckonsoru.data.AppointmentDAO;
-import com.fges.ckonsoru.data.AvailabilityDAO;
-import com.fges.ckonsoru.data.TimeslotDAO;
-import com.fges.ckonsoru.data.WaitingLineDAO;
+import com.fges.ckonsoru.data.*;
 import com.fges.ckonsoru.data.psql.*;
 import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
@@ -39,6 +36,7 @@ public class App {
         AvailabilityDAO availabilityDAO = null;
         TimeslotDAO timeslotDAO = null;
         WaitingLineDAO waitingLineDAO = null;
+        CancellationDAO cancellationDAO = null;
 
 
         if(percistence.equals("bdd")){
@@ -48,6 +46,7 @@ public class App {
             availabilityDAO = new BDDAvaibilityDAO(adapterSingleton);
             timeslotDAO = new BDDTimeslotDAO(adapterSingleton);
             waitingLineDAO = new BDDWaitingLineDAO(adapterSingleton);
+            cancellationDAO = new BDDCancellationDAO();
 
         }
         else if(percistence.equals("xml")){
@@ -67,7 +66,7 @@ public class App {
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
                 new RemoveAppointment(appointmentDAO),
-                new ListCancellation(),
+                new ListCancellation(cancellationDAO),
                 new WaitingList(waitingLineDAO)
         };
 
