@@ -14,9 +14,9 @@ public class BDDCancellationDAO implements CancellationDAO {
 
     BDDAdapterSingleton bddAdapterSingleton;
 
-    public BDDCancellationDAO() {
+    public BDDCancellationDAO(BDDAdapterSingleton bddAdapterSingleton) {
         this.bddAdapterSingleton =
-                BDDAdapterSingleton.getInstance();
+                bddAdapterSingleton;
     }
 
 

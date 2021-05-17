@@ -24,6 +24,7 @@ public class WaitingLineSpot {
         this.deadline = deadline;
         this.proposedTimeslot = proposedTimeslot;
         this.requestedDate = requestedDate;
+        this.veterinaryName = veterinaryName;
     }
 
     public String getClientName() {
@@ -47,6 +48,6 @@ public class WaitingLineSpot {
     }
 
     public String getVeterinaryName() {
-        return veterinaryName;
+        return this.veterinaryName;
     }
 }
