@@ -5,6 +5,8 @@
  */
 package com.fges.ckonsoru.usecase;
 
+import java.sql.SQLException;
+
 /**
  * Represents a USECase used by the Menu class as an action. A UseCase has a choice string and a trigger method.
  */
@@ -19,6 +21,6 @@ public abstract class UseCase {
     /**
      * Called to trigger the UseCase
      */
-    public abstract void trigger();
+    public abstract void trigger() throws SQLException;
 
 }
