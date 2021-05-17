@@ -1,7 +1,9 @@
 package com.fges.ckonsoru.data;
 
+import com.fges.ckonsoru.models.Timeslot;
 import com.fges.ckonsoru.models.WaitingLineSpot;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface WaitingLineDAO {
@@ -19,12 +21,12 @@ public interface WaitingLineDAO {
     Collection<WaitingLineSpot> getWaitingLineSpots();
 
     /**
-     * Assign the timeslot to the user with the latest deadline. If 2 users are equal, the first one that asked
+     * Assign the datetime to the user with the latest deadline. If 2 users are equal, the first one that asked
      * is the first one that ask gets it.
-     * @param timeslot timeslot to assign
+     * @param localDateTime datetime to assign
      * @return true if it succeeded.
      */
-    boolean updateWaitingLine(Object timeslot); // TODO : type
+    boolean updateWaitingLine(LocalDateTime localDateTime); // TODO : type
 
 
 }
