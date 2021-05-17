@@ -2,8 +2,10 @@ package com.fges.ckonsoru.usecase;
 
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.AvailabilityDAO;
+import com.fges.ckonsoru.data.TimeslotDAO;
 import com.fges.ckonsoru.models.Appointment;
 import com.fges.ckonsoru.models.Availability;
+import com.fges.ckonsoru.models.Timeslot;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -18,7 +20,8 @@ import java.util.Scanner;
 public class InitWeek extends UseCase{
 
     protected AppointmentDAO appointmentDAO;
-    protected AvailabilityDAO availabilityDAO;
+    protected TimeslotDAO timeslotDAO;
+
     protected List<String> nomsClients =
             Arrays.asList("Ackerman", "Arlelt","Blouse","Braun","Hoover",
                     "Jager","Kirschtein","Lenz","Reiss","Springer","Zoe",
@@ -29,9 +32,9 @@ public class InitWeek extends UseCase{
 
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public InitWeek(AppointmentDAO appointmentDAO, AvailabilityDAO availabilityDAO) {
+    public InitWeek(AppointmentDAO appointmentDAO, TimeslotDAO timeslotDAO) {
         this.appointmentDAO = appointmentDAO;
-        this.availabilityDAO = availabilityDAO;
+        this.timeslotDAO = timeslotDAO;
     }
 
     @Override
@@ -49,12 +52,10 @@ public class InitWeek extends UseCase{
         // remplissage de 7 jours consécutifs...
         for(int i=0;i<7;i++){
             try {
-                Collection<Availability> dispos = availabilityDAO.getAvailabilityByDay(date.getDayOfWeek());
+                Collection<Timeslot> dispos = timeslotDAO.getFreeTimeslots(date);
                 // crée un rdv pour chaque dispo
-                for (Availability dispo : dispos ){
-                    System.out.println(dispo.getBegin());
-                    LocalDateTime dateTime = LocalDateTime.of(date, dispo.getBegin());
-                    Appointment rdv = new Appointment(dateTime, genereClient(), dispo.getVeterinaryName());
+                for (Timeslot dispo : dispos ){
+                    Appointment rdv = new Appointment(dispo.getDebut(), genereClient(), dispo.getVeterinaryName());
                     appointmentDAO.registerAppointment(rdv);
                 }
                 date = date.plus(1, ChronoUnit.DAYS);
