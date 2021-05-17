@@ -4,7 +4,6 @@ import com.fges.ckonsoru.data.WaitingLineDAO;
 import com.fges.ckonsoru.models.WaitingLineSpot;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
