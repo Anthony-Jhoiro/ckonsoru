@@ -7,11 +7,8 @@ package com.fges.ckonsoru;
 
 import java.util.Properties;
 
-import com.fges.ckonsoru.data.AppointmentDAO;
-import com.fges.ckonsoru.data.AvailabilityDAO;
-import com.fges.ckonsoru.data.psql.BDDAdapterSingleton;
-import com.fges.ckonsoru.data.psql.BDDAppointmentDAO;
-import com.fges.ckonsoru.data.psql.BDDAvaibilityDAO;
+import com.fges.ckonsoru.data.*;
+import com.fges.ckonsoru.data.psql.*;
 import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
@@ -37,12 +34,20 @@ public class App {
 
         AppointmentDAO appointmentDAO = null;
         AvailabilityDAO availabilityDAO = null;
+        TimeslotDAO timeslotDAO = null;
+        WaitingLineDAO waitingLineDAO = null;
+        CancellationDAO cancellationDAO = null;
+
 
         if(percistence.equals("bdd")){
             BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
             adapterSingleton.init(properties.getProperty("bdd.url"), properties.getProperty("bdd.login"), properties.getProperty("bdd.mdp"));
             appointmentDAO = new BDDAppointmentDAO(adapterSingleton);
             availabilityDAO = new BDDAvaibilityDAO(adapterSingleton);
+            timeslotDAO = new BDDTimeslotDAO(adapterSingleton);
+            waitingLineDAO = new BDDWaitingLineDAO(adapterSingleton);
+            cancellationDAO = new BDDCancellationDAO();
+
         }
         else if(percistence.equals("xml")){
             XMLAdapterSingleton.init(properties);
@@ -56,10 +61,13 @@ public class App {
 
         // initialating the menu
         UseCase[] actions = {
-                new ListFreeTimeslotsByDate(availabilityDAO, appointmentDAO),
+                new InitWeek(appointmentDAO, timeslotDAO),
+                new ListFreeTimeslotsByDate(timeslotDAO),
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
-                new RemoveAppointment(appointmentDAO)
+                new RemoveAppointment(appointmentDAO),
+                new ListCancellation(cancellationDAO),
+                new WaitingList(waitingLineDAO)
         };
 
         Menu menu = new Menu(actions);

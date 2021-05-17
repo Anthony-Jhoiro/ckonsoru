@@ -6,6 +6,7 @@ import com.fges.ckonsoru.models.xml.XMLAvailability;
 import org.w3c.dom.Element;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
