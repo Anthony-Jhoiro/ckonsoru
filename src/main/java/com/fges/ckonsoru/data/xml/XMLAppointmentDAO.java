@@ -24,7 +24,6 @@ public class XMLAppointmentDAO implements AppointmentDAO {
 
     /**
      * Create an XMLAppointmentRepository
-     * @param adapter adapter used to interact with the XML database
      */
     public XMLAppointmentDAO(){
         this.adapter = XMLAdapterSingleton.getInstance();

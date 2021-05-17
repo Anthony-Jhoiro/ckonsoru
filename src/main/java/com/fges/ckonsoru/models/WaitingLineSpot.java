@@ -37,7 +37,7 @@ public class WaitingLineSpot {
         return deadline;
     }
 
-    public Object getProposedTimeslot() {
+    public LocalDateTime getProposedTimeslot() {
         return proposedTimeslot;
     }
 
