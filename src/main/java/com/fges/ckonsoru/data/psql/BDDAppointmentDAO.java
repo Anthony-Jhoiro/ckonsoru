@@ -27,7 +27,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      * @param date LocalDate from which we wan the results
      * @return A collection of the fetched appointments
      */
-    public Collection<Appointment> getAllAppointmentsByDate(LocalDate date){
+    public Collection<Appointment> getAllAppointmentsByDate(LocalDate date) throws SQLException{
 
         ArrayList<Appointment> appointments = new ArrayList<>();
         Appointment appRes;
@@ -35,20 +35,12 @@ public class BDDAppointmentDAO implements AppointmentDAO {
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(date);
 
-        try {
-            ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous WHERE rv_debut >= ?::date AND rv_debut < (?::date + '1 day'::interval)", params);
-            while (rs.next()){
-                appRes = new Appointment(rs.getObject("rv_debut", LocalDateTime.class), rs.getString("rv_client"), rs.getString("vet_nom"));
-                appointments.add(appRes);
-            }
-            rs.close();
+        ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous WHERE rv_debut >= ?::date AND rv_debut < (?::date + '1 day'::interval)", params);
+        while (rs.next()){
+            appRes = new Appointment(rs.getObject("rv_debut", LocalDateTime.class), rs.getString("rv_client"), rs.getString("vet_nom"));
+            appointments.add(appRes);
         }
-        catch (SQLException error){
-            // TODO : no print inside service
-            System.out.println("appointment.getAllAppointmentByDate :");
-            System.out.println(error.getMessage());
-            return new ArrayList<>();
-        }
+        rs.close();
 
 
         return appointments;
@@ -59,22 +51,16 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      * @param appointment appointment to create
      * @return true if the operation succeeds
      */
-    public boolean registerAppointment(Appointment appointment){
+    public boolean registerAppointment(Appointment appointment) throws SQLException{
 
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(appointment.getVeterinaryName());
         params.add(appointment.getBeginDateTime());
         params.add(appointment.getClientName());
 
-        try {
-            return this.adapterSingleton.update("INSERT INTO rendezvous (vet_id, rv_debut, rv_client) VALUES((SELECT vet_id FROM veterinaire WHERE vet_nom = ?::varchar), ?::timestamp, ?::varchar)", params);
-        }
-        catch (SQLException error){
-            // TODO : no print inside service
-            System.out.println("appointment.registerAppointment :");
-            System.out.println(error.getMessage());
-            return false;
-        }
+
+        return this.adapterSingleton.update("INSERT INTO rendezvous (vet_id, rv_debut, rv_client) VALUES((SELECT vet_id FROM veterinaire WHERE vet_nom = ?::varchar), ?::timestamp, ?::varchar)", params);
+
 
     }
 
@@ -84,21 +70,13 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      * @param clientName client of the appointment
      * @return true if the operation succeeds
      */
-    public boolean removeAppointment(LocalDateTime datetime, String clientName){
+    public boolean removeAppointment(LocalDateTime datetime, String clientName) throws SQLException{
 
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(datetime);
         params.add(clientName);
 
-        try {
-            return this.adapterSingleton.update("DELETE FROM rendezvous r WHERE r.rv_debut = ?::timestamp AND r.rv_client = ?::varchar", params);
-        }
-        catch (SQLException error){
-            // TODO : no print inside service
-            System.out.println("appointment.removeAppointment :");
-            System.out.println(error.getMessage());
-            return false;
-        }
+        return this.adapterSingleton.update("DELETE FROM rendezvous r WHERE r.rv_debut = ?::timestamp AND r.rv_client = ?::varchar", params);
     }
 
     /**
@@ -106,28 +84,20 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      * @param clientName name of the client
      * @return A {@link Collection} of {@link Appointment}
      */
-    public Collection<Appointment> getAllAppointmentsByClient(String clientName){
+    public Collection<Appointment> getAllAppointmentsByClient(String clientName) throws SQLException{
         ArrayList<Appointment> appointments = new ArrayList<>();
         Appointment appRes;
 
         ArrayList<Object> params = new ArrayList<Object>();
         params.add(clientName);
 
-        try {
-            ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous r INNER JOIN veterinaire v ON v.vet_id = r.vet_id WHERE r.rv_client = ?::varchar;", params);
+        ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous r INNER JOIN veterinaire v ON v.vet_id = r.vet_id WHERE r.rv_client = ?::varchar;", params);
 
-            while (rs.next()){
-                appRes = new Appointment(rs.getObject("rv_debut", LocalDateTime.class), rs.getString("rv_client"), rs.getString("vet_nom"));
-                appointments.add(appRes);
-            }
-            rs.close();
+        while (rs.next()){
+            appRes = new Appointment(rs.getObject("rv_debut", LocalDateTime.class), rs.getString("rv_client"), rs.getString("vet_nom"));
+            appointments.add(appRes);
         }
-        catch (SQLException error){
-            // TODO : no print inside service
-            System.out.println("appointment.getAllAppointmentsByClient :");
-            System.out.println(error.getMessage());
-            return new ArrayList<>();
-        }
+        rs.close();
 
 
         return appointments;
@@ -139,7 +109,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      * @param doctorName name of the doctor
      * @return true if the doctor has no appointment
      */
-    public boolean isFree(LocalDateTime datetime, String doctorName){
+    public boolean isFree(LocalDateTime datetime, String doctorName) throws SQLException{
 
         int count = 1;
 
@@ -147,21 +117,13 @@ public class BDDAppointmentDAO implements AppointmentDAO {
         params.add(datetime);
         params.add(doctorName);
 
-        try {
-            ResultSet rs = this.adapterSingleton.find("SELECT COUNT(*) AS rowcount  FROM rendezvous r WHERE rv_debut = ?::timestamp AND r.vet_id = (SELECT vet_id FROM veterinaire v WHERE v.vet_nom = ?::varchar)", params);
+        ResultSet rs = this.adapterSingleton.find("SELECT COUNT(*) AS rowcount  FROM rendezvous r WHERE rv_debut = ?::timestamp AND r.vet_id = (SELECT vet_id FROM veterinaire v WHERE v.vet_nom = ?::varchar)", params);
 
-            if(rs.next()){
-                count = rs.getInt("rowcount");
-            }
+        if(rs.next()){
+            count = rs.getInt("rowcount");
+        }
 
-            rs.close();
-        }
-        catch (SQLException error){
-            // TODO : no print inside service
-            System.out.println("appointment.isFree :");
-            System.out.println(error.getMessage());
-            return false;
-        }
+        rs.close();
 
         return count == 0;
     }

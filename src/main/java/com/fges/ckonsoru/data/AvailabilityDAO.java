@@ -3,6 +3,7 @@ package com.fges.ckonsoru.data;
 import com.fges.ckonsoru.models.Availability;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -15,7 +16,7 @@ public interface AvailabilityDAO {
      * @param day day from which we want the availabilities
      * @return a collection of Availabilities representing the fetched data
      */
-    Collection<Availability> getAvailabilityByDay(DayOfWeek day);
+    Collection<Availability> getAvailabilityByDay(DayOfWeek day) throws Exception;
 
     /**
      * Fetch the database to know if the veterinary is available at the given time
@@ -23,5 +24,5 @@ public interface AvailabilityDAO {
      * @param veterinaryName veterinary name
      * @return true if the veterinary is available
      */
-    boolean isAvailable(LocalDateTime datetime, String veterinaryName);
+    boolean isAvailable(LocalDateTime datetime, String veterinaryName) throws Exception;
 }
