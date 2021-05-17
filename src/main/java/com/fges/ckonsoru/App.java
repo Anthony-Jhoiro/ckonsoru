@@ -17,6 +17,7 @@ import com.fges.ckonsoru.data.psql.BDDTimeslotDAO;
 import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
+import com.fges.ckonsoru.data.xml.XMLTimeslotDAO;
 import com.fges.ckonsoru.menu.Menu;
 import com.fges.ckonsoru.usecase.*;
 
@@ -52,6 +53,7 @@ public class App {
             XMLAdapterSingleton.init(properties);
             appointmentDAO = new XMLAppointmentDAO();
             availabilityDAO = new XMLAvailabilityDAO();
+            timeslotDAO = new XMLTimeslotDAO();
         }
         else {
             System.out.println("le mode de persistence ne peut être que 'xml' ou 'bdd', or, il est égal à |" + percistence + "|");
