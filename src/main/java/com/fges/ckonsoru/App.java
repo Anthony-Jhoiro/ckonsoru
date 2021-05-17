@@ -10,10 +10,8 @@ import java.util.Properties;
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.AvailabilityDAO;
 import com.fges.ckonsoru.data.TimeslotDAO;
-import com.fges.ckonsoru.data.psql.BDDAdapterSingleton;
-import com.fges.ckonsoru.data.psql.BDDAppointmentDAO;
-import com.fges.ckonsoru.data.psql.BDDAvaibilityDAO;
-import com.fges.ckonsoru.data.psql.BDDTimeslotDAO;
+import com.fges.ckonsoru.data.WaitingLineDAO;
+import com.fges.ckonsoru.data.psql.*;
 import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
@@ -40,6 +38,8 @@ public class App {
         AppointmentDAO appointmentDAO = null;
         AvailabilityDAO availabilityDAO = null;
         TimeslotDAO timeslotDAO = null;
+        WaitingLineDAO waitingLineDAO = null;
+
 
         if(percistence.equals("bdd")){
             BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
@@ -47,6 +47,8 @@ public class App {
             appointmentDAO = new BDDAppointmentDAO(adapterSingleton);
             availabilityDAO = new BDDAvaibilityDAO(adapterSingleton);
             timeslotDAO = new BDDTimeslotDAO(adapterSingleton);
+            waitingLineDAO = new BDDWaitingLineDAO(adapterSingleton);
+
         }
         else if(percistence.equals("xml")){
             XMLAdapterSingleton.init(properties);
@@ -65,7 +67,8 @@ public class App {
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
                 new RemoveAppointment(appointmentDAO),
-                new ListCancellation()
+                new ListCancellation(),
+                new WaitingList(waitingLineDAO)
         };
 
         Menu menu = new Menu(actions);

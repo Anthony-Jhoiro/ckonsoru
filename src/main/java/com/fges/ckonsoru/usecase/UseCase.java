@@ -21,6 +21,6 @@ public abstract class UseCase {
     /**
      * Called to trigger the UseCase
      */
-    public abstract void trigger() throws SQLException;
+    public abstract void trigger() ;
 
 }
