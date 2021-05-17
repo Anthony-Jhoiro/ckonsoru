@@ -9,13 +9,12 @@ import java.util.Properties;
 
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.AvailabilityDAO;
-import com.fges.ckonsoru.data.CancellationDAO;
 import com.fges.ckonsoru.data.TimeslotDAO;
+import com.fges.ckonsoru.data.WaitingLineDAO;
 import com.fges.ckonsoru.data.psql.*;
 import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
-import com.fges.ckonsoru.data.xml.XMLTimeslotDAO;
 import com.fges.ckonsoru.menu.Menu;
 import com.fges.ckonsoru.usecase.*;
 
@@ -39,7 +38,8 @@ public class App {
         AppointmentDAO appointmentDAO = null;
         AvailabilityDAO availabilityDAO = null;
         TimeslotDAO timeslotDAO = null;
-        CancellationDAO cancellationDAO = null;
+        WaitingLineDAO waitingLineDAO = null;
+
 
         if(percistence.equals("bdd")){
             BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
@@ -47,13 +47,13 @@ public class App {
             appointmentDAO = new BDDAppointmentDAO(adapterSingleton);
             availabilityDAO = new BDDAvaibilityDAO(adapterSingleton);
             timeslotDAO = new BDDTimeslotDAO(adapterSingleton);
-            cancellationDAO = new BDDCancellationDAO();
+            waitingLineDAO = new BDDWaitingLineDAO(adapterSingleton);
+
         }
         else if(percistence.equals("xml")){
             XMLAdapterSingleton.init(properties);
             appointmentDAO = new XMLAppointmentDAO();
             availabilityDAO = new XMLAvailabilityDAO();
-            timeslotDAO = new XMLTimeslotDAO();
         }
         else {
             System.out.println("le mode de persistence ne peut être que 'xml' ou 'bdd', or, il est égal à |" + percistence + "|");
@@ -66,8 +66,9 @@ public class App {
                 new ListFreeTimeslotsByDate(timeslotDAO),
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
-                new RemoveAppointmentV2(appointmentDAO, cancellationDAO),
-                new ListCancellation(cancellationDAO),
+                new RemoveAppointment(appointmentDAO),
+                new ListCancellation(),
+                new WaitingList(waitingLineDAO)
         };
 
         Menu menu = new Menu(actions);

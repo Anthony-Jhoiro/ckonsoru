@@ -5,12 +5,20 @@ import java.time.format.DateTimeFormatter;
 
 public class Timeslot {
 
-    public LocalDateTime debut;
-    public String veterinaryName;
+    private LocalDateTime debut;
+    private String veterinaryName;
 
     public Timeslot(LocalDateTime debut, String veterinaryName){
         this.debut = debut;
         this.veterinaryName = veterinaryName;
+    }
+
+    public LocalDateTime getDebut() {
+        return debut;
+    }
+
+    public String getVeterinaryName() {
+        return veterinaryName;
     }
 
     @Override

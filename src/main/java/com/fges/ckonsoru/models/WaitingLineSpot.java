@@ -7,8 +7,9 @@ public class WaitingLineSpot {
     private String clientName;
     private String numTel;
     private LocalDate deadline;
-    private Object proposedTimeslot; // TODO : type
+    private LocalDateTime proposedTimeslot; // TODO : type
     private LocalDateTime requestedDate;
+    private String veterinaryName;
 
     public WaitingLineSpot(String clientName, String numTel, LocalDate deadline, LocalDateTime requestedDate) {
         this.clientName = clientName;
@@ -17,7 +18,7 @@ public class WaitingLineSpot {
         this.requestedDate = requestedDate;
     }
 
-    public WaitingLineSpot(String clientName, String numTel, LocalDate deadline, Object proposedTimeslot, LocalDateTime requestedDate) {
+    public WaitingLineSpot(String clientName, String numTel, LocalDate deadline, LocalDateTime proposedTimeslot, LocalDateTime requestedDate, String veterinaryName) {
         this.clientName = clientName;
         this.numTel = numTel;
         this.deadline = deadline;
@@ -37,11 +38,15 @@ public class WaitingLineSpot {
         return deadline;
     }
 
-    public Object getProposedTimeslot() {
+    public LocalDateTime getProposedTimeslot() {
         return proposedTimeslot;
     }
 
     public LocalDateTime getRequestedDate() {
         return requestedDate;
+    }
+
+    public String getVeterinaryName() {
+        return veterinaryName;
     }
 }

@@ -1,7 +1,10 @@
 package com.fges.ckonsoru.data;
 
+import com.fges.ckonsoru.models.Timeslot;
 import com.fges.ckonsoru.models.WaitingLineSpot;
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface WaitingLineDAO {
@@ -10,21 +13,21 @@ public interface WaitingLineDAO {
      * @param waitingLineSpot Slot to add.
      * @return true if it succeeded.
      */
-    boolean addToWaitingLine(WaitingLineSpot waitingLineSpot);
+    boolean addToWaitingLine(WaitingLineSpot waitingLineSpot) throws SQLException;
 
     /**
      * Fetch all the waiting lines spots
      * @return a collection of WaitingLineSpot
      */
-    Collection<WaitingLineSpot> getWaitingLineSpots();
+    Collection<WaitingLineSpot> getWaitingLineSpots() throws SQLException;
 
     /**
-     * Assign the timeslot to the user with the latest deadline. If 2 users are equal, the first one that asked
+     * Assign the datetime to the user with the latest deadline. If 2 users are equal, the first one that asked
      * is the first one that ask gets it.
-     * @param timeslot timeslot to assign
+     * @param localDateTime datetime to assign
      * @return true if it succeeded.
      */
-    boolean updateWaitingLine(Object timeslot); // TODO : type
+    boolean updateWaitingLine(LocalDateTime localDateTime) throws SQLException; // TODO : type
 
 
 }
