@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
-public class ListFreeTimeslotsByDate extends UseCase {
+public class ListFreeTimeslotsByDate implements UseCase {
     protected TimeslotDAO timeslotDAO;
 
     public ListFreeTimeslotsByDate(TimeslotDAO timeslotDAO) {

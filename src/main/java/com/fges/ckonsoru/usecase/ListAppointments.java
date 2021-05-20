@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Scanner;
 
-public class ListAppointments extends UseCase {
+public class ListAppointments implements UseCase {
 
     protected AppointmentDAO appointmentDAO;
 

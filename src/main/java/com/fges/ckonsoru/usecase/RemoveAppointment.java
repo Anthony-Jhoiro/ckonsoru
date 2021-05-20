@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class RemoveAppointment extends UseCase{
+public class RemoveAppointment implements UseCase {
     protected AppointmentDAO appointmentDAO;
 
     public RemoveAppointment(AppointmentDAO appointmentDAO) {

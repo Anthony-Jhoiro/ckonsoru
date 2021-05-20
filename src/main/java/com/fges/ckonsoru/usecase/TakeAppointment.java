@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class TakeAppointment extends UseCase {
+public class TakeAppointment implements UseCase {
 
     protected AppointmentDAO appointmentDAO;
 

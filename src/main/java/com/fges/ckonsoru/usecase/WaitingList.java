@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
-public class WaitingList extends UseCase {
+public class WaitingList implements UseCase {
 
     WaitingLineDAO waitingLineDAO;
 

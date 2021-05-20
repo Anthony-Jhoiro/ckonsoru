@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-public class InitWeek extends UseCase{
+public class InitWeek implements UseCase {
 
     protected AppointmentDAO appointmentDAO;
     protected TimeslotDAO timeslotDAO;

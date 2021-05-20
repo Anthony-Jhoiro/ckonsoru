@@ -5,7 +5,7 @@ import com.fges.ckonsoru.models.Cancellation;
 
 import java.util.Collection;
 
-public class ListCancellation extends UseCase {
+public class ListCancellation implements UseCase {
 
     CancellationDAO cancellationDAO;
 
