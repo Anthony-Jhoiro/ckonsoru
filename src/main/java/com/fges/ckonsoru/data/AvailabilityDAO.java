@@ -16,7 +16,7 @@ public interface AvailabilityDAO {
      * @param day day from which we want the availabilities
      * @return a collection of Availabilities representing the fetched data
      */
-    Collection<Availability> getAvailabilityByDay(DayOfWeek day) throws Exception;
+    Collection<Availability> getAvailabilityByDay(DayOfWeek day);
 
     /**
      * Fetch the database to know if the veterinary is available at the given time
@@ -24,5 +24,5 @@ public interface AvailabilityDAO {
      * @param veterinaryName veterinary name
      * @return true if the veterinary is available
      */
-    boolean isAvailable(LocalDateTime datetime, String veterinaryName) throws Exception;
+    boolean isAvailable(LocalDateTime datetime, String veterinaryName);
 }

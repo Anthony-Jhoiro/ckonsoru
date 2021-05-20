@@ -13,13 +13,13 @@ public interface WaitingLineDAO {
      * @param waitingLineSpot Slot to add.
      * @return true if it succeeded.
      */
-    boolean addToWaitingLine(WaitingLineSpot waitingLineSpot) throws SQLException;
+    boolean addToWaitingLine(WaitingLineSpot waitingLineSpot);
 
     /**
      * Fetch all the waiting lines spots
      * @return a collection of WaitingLineSpot
      */
-    Collection<WaitingLineSpot> getWaitingLineSpots() throws SQLException;
+    Collection<WaitingLineSpot> getWaitingLineSpots();
 
     /**
      * Assign the datetime to the user with the latest deadline. If 2 users are equal, the first one that asked
@@ -27,7 +27,7 @@ public interface WaitingLineDAO {
      * @param localDateTime datetime to assign
      * @return true if it succeeded.
      */
-    boolean updateWaitingLine(LocalDateTime localDateTime) throws SQLException; // TODO : type
+    boolean updateWaitingLine(LocalDateTime localDateTime); // TODO : type
 
 
 }

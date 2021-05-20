@@ -4,15 +4,10 @@ import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.CancellationDAO;
 import com.fges.ckonsoru.data.WaitingLineDAO;
 import com.fges.ckonsoru.events.Observable;
-import com.fges.ckonsoru.events.Observer;
 import com.fges.ckonsoru.models.Appointment;
 
-import java.sql.SQLException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class RemoveAppointment extends Observable<Appointment> implements UseCase {
@@ -43,37 +38,33 @@ public class RemoveAppointment extends Observable<Appointment> implements UseCas
         Scanner answer = new Scanner(System.in);
         String timeString = answer.nextLine();
         // check timeString
-        try {
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
-            LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
 
-            // ask client name
-            System.out.println("Indiquer le nom du client");
-            String clientName = answer.nextLine();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:m");
+        LocalDateTime date = LocalDateTime.parse(timeString, timeFormatter);
 
-            Appointment appointmentToRemove = appointmentDAO.getAppointmentByClientNameAndDate(clientName, date);
+        // ask client name
+        System.out.println("Indiquer le nom du client");
+        String clientName = answer.nextLine();
 
-            // Stop the function if no appointment has been found
-            if (appointmentToRemove == null) {
-                System.out.println("Aucun rendez-vous n'a été trouvé.");
-                return;
-            }
+        Appointment appointmentToRemove = appointmentDAO.getAppointmentByClientNameAndDate(clientName, date);
 
-            // remove the appointment
-            if (this.appointmentDAO.removeAppointment(appointmentToRemove.getBeginDateTime(), appointmentToRemove.getClientName())) {
-                System.out.println("Un rendez-vous pour "+ clientName +" le  "+ timeString +" a été supprimé");
-
-
-                this.emit(appointmentToRemove);
-
-            } else {
-                System.out.println("Une erreur est " +
-                        "survenue pendant la suppression " +
-                        "du rendez-vous");
-            }
+        // Stop the function if no appointment has been found
+        if (appointmentToRemove == null) {
+            System.out.println("Aucun rendez-vous n'a été trouvé.");
+            return;
         }
-        catch(Exception e){
-            System.out.println("problème de parsing de la date");
+
+        // remove the appointment
+        if (this.appointmentDAO.removeAppointment(appointmentToRemove.getBeginDateTime(), appointmentToRemove.getClientName())) {
+            System.out.println("Un rendez-vous pour " + clientName + " le  " + timeString + " a été supprimé");
+
+
+            this.emit(appointmentToRemove);
+
+        } else {
+            System.out.println("Une erreur est " +
+                    "survenue pendant la suppression " +
+                    "du rendez-vous");
         }
     }
 }

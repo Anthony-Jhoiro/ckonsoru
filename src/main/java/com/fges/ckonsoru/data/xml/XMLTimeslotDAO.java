@@ -65,10 +65,10 @@ public class XMLTimeslotDAO implements TimeslotDAO {
     }
 
     @Override
-    public Collection<Timeslot> getFreeTimeslots(LocalDate date) throws Exception {
+    public Collection<Timeslot> getFreeTimeslots(LocalDate date) {
 
         ArrayList<Timeslot> timeslots =
-                new ArrayList<Timeslot>();
+                new ArrayList<>();
 
         DayOfWeek day = date.getDayOfWeek();
 

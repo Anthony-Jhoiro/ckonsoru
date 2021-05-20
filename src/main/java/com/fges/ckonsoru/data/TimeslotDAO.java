@@ -7,6 +7,6 @@ import java.util.Collection;
 
 public interface TimeslotDAO {
 
-    Collection<Timeslot> getFreeTimeslots(LocalDate date) throws Exception;
+    Collection<Timeslot> getFreeTimeslots(LocalDate date);
 
 }

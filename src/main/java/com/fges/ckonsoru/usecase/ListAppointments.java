@@ -3,7 +3,6 @@ package com.fges.ckonsoru.usecase;
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.models.Appointment;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -28,17 +27,12 @@ public class ListAppointments implements UseCase {
         String clientName = answer.nextLine();
         // Check name with regex
 
-        try {
-            Collection<Appointment> appointments = this.appointmentDAO.getAllAppointmentsByClient(clientName);
+        Collection<Appointment> appointments = this.appointmentDAO.getAllAppointmentsByClient(clientName);
 
-            System.out.println(appointments.size() + " rendez-vous trouvé(s) pour " + clientName);
+        System.out.println(appointments.size() + " rendez-vous trouvé(s) pour " + clientName);
 
-            for(Appointment appointment: appointments) {
-                System.out.println(appointment.toStringForClient());
-            }
-        }
-        catch(Exception error){
-            System.out.println("un problème est survenu dans la base de données : récupération des rendez-vous impossible");
+        for (Appointment appointment : appointments) {
+            System.out.println(appointment.toStringForClient());
         }
     }
 }
