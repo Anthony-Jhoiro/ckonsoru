@@ -14,15 +14,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class RemoveAppointmentV2 extends RemoveAppointment implements Observable<LocalDateTime> {
+public class RemoveAppointmentV2 extends Observable<LocalDateTime> implements UseCase {
 
     protected CancellationDAO cancellationDAO;
     protected WaitingLineDAO waitingLineDAO;
+    protected AppointmentDAO appointmentDAO;
 
     public RemoveAppointmentV2(AppointmentDAO appointmentDAO, CancellationDAO cancellationDAO, WaitingLineDAO waitingLineDAO) {
-        super(appointmentDAO);
         this.cancellationDAO = cancellationDAO;
         this.waitingLineDAO = waitingLineDAO;
+    }
+
+
+    @Override
+    public String getChoice() {
+        return "Supprimer un rendez-vous";
     }
 
     @Override
@@ -81,25 +87,6 @@ public class RemoveAppointmentV2 extends RemoveAppointment implements Observable
         }
         catch(Exception e){
             System.out.println("problème de parsing de la date");
-        }
-    }
-
-    private final List<Observer<LocalDateTime>> observers = new ArrayList<>();
-
-    @Override
-    public void subscribe(Observer<LocalDateTime> observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void unsubscribe(Observer<LocalDateTime> observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void emit(LocalDateTime data) {
-        for (Observer<LocalDateTime> observer : observers) {
-            observer.trigger(data);
         }
     }
 }
