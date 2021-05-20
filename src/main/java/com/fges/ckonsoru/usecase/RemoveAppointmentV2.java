@@ -3,14 +3,18 @@ package com.fges.ckonsoru.usecase;
 import com.fges.ckonsoru.data.AppointmentDAO;
 import com.fges.ckonsoru.data.CancellationDAO;
 import com.fges.ckonsoru.data.WaitingLineDAO;
+import com.fges.ckonsoru.events.Observable;
+import com.fges.ckonsoru.events.Observer;
 
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class RemoveAppointmentV2 extends RemoveAppointment{
+public class RemoveAppointmentV2 extends RemoveAppointment implements Observable<LocalDateTime> {
 
     protected CancellationDAO cancellationDAO;
     protected WaitingLineDAO waitingLineDAO;
@@ -59,7 +63,7 @@ public class RemoveAppointmentV2 extends RemoveAppointment{
                             System.out.println("Une erreur " +
                                     "est survenue lors du " +
                                     "traçage de l'annulation");
-                        };
+                        }
                     }
                     catch(SQLException error) {
                         System.out.println("Une erreur " +
@@ -67,15 +71,7 @@ public class RemoveAppointmentV2 extends RemoveAppointment{
                                 "traçage de l'annulation");
                     }
                 }
-
-                try{
-                    this.waitingLineDAO.updateWaitingLine(date);
-                }
-                catch(Exception error){
-                    System.out.println("problème dans la " +
-                            "mise à jour de la liste " +
-                            "d'attente");
-                }
+                this.emit(date);
 
             } else {
                 System.out.println("Une erreur est " +
@@ -85,6 +81,25 @@ public class RemoveAppointmentV2 extends RemoveAppointment{
         }
         catch(Exception e){
             System.out.println("problème de parsing de la date");
+        }
+    }
+
+    private final List<Observer<LocalDateTime>> observers = new ArrayList<>();
+
+    @Override
+    public void subscribe(Observer<LocalDateTime> observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void unsubscribe(Observer<LocalDateTime> observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void emit(LocalDateTime data) {
+        for (Observer<LocalDateTime> observer : observers) {
+            observer.trigger(data);
         }
     }
 }

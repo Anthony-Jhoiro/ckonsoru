@@ -17,6 +17,7 @@ import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
 import com.fges.ckonsoru.data.xml.XMLTimeslotDAO;
+import com.fges.ckonsoru.events.listeners.UpdateWaitingListListener;
 import com.fges.ckonsoru.menu.Menu;
 import com.fges.ckonsoru.usecase.*;
 
@@ -43,6 +44,8 @@ public class App {
         WaitingLineDAO waitingLineDAO = null;
         CancellationDAO cancellationDAO = null;
 
+        // Init DAO
+
         if(percistence.equals("bdd")){
             BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
             adapterSingleton.init(properties.getProperty("bdd.url"), properties.getProperty("bdd.login"), properties.getProperty("bdd.mdp"));
@@ -62,6 +65,16 @@ public class App {
             System.out.println("le mode de persistence ne peut être que 'xml' ou 'bdd', or, il est égal à |" + percistence + "|");
             System.exit(0);
         }
+
+        // Init observers
+        RemoveAppointmentV2 removeAppointmentV2 = new RemoveAppointmentV2(appointmentDAO,
+                cancellationDAO, waitingLineDAO);
+
+        UpdateWaitingListListener listener = new UpdateWaitingListListener(waitingLineDAO);
+
+        removeAppointmentV2.subscribe(listener);
+
+
 
         // initialating the menu
         UseCase[] actions = {
