@@ -67,14 +67,12 @@ public class App {
         }
 
         // Init observers
-        RemoveAppointmentV2 removeAppointmentV2 = new RemoveAppointmentV2(appointmentDAO,
+        RemoveAppointment removeAppointment = new RemoveAppointment(appointmentDAO,
                 cancellationDAO, waitingLineDAO);
 
-        UpdateWaitingListListener listener = new UpdateWaitingListListener(waitingLineDAO);
+        UpdateWaitingListListener listener = new UpdateWaitingListListener(waitingLineDAO, cancellationDAO);
 
-        removeAppointmentV2.subscribe(listener);
-
-
+        removeAppointment.subscribe(listener);
 
         // initialating the menu
         UseCase[] actions = {
@@ -84,8 +82,7 @@ public class App {
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
                 new WaitingList(waitingLineDAO),
-                new RemoveAppointmentV2(appointmentDAO,
-                        cancellationDAO, waitingLineDAO),
+                removeAppointment,
                 new ListCancellation(cancellationDAO)
         };
 

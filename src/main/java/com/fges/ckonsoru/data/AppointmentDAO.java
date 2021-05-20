@@ -5,6 +5,7 @@ import com.fges.ckonsoru.models.Appointment;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Represents a Repository to manage appointments
@@ -47,6 +48,8 @@ public interface AppointmentDAO{
      * @return true if the doctor has no appointment
      */
     boolean isFree(LocalDateTime datetime, String doctorName) throws Exception;
+
+    Appointment getAppointmentByClientNameAndDate(String clientName, LocalDateTime date);
 
 
 

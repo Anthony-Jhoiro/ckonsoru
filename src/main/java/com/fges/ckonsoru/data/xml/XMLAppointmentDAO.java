@@ -83,6 +83,11 @@ public class XMLAppointmentDAO implements AppointmentDAO {
         return this.adapter.find(xpath).isEmpty();
     }
 
+    @Override
+    public Appointment getAppointmentByClientNameAndDate(String clientName, LocalDateTime date) {
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */

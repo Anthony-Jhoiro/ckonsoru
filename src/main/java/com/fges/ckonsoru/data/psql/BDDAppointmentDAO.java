@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Properties;
 
 import com.fges.ckonsoru.data.AppointmentDAO;
@@ -32,7 +33,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
         ArrayList<Appointment> appointments = new ArrayList<>();
         Appointment appRes;
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         params.add(date);
 
         ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous WHERE rv_debut >= ?::date AND rv_debut < (?::date + '1 day'::interval)", params);
@@ -53,7 +54,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      */
     public boolean registerAppointment(Appointment appointment) throws SQLException{
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         params.add(appointment.getVeterinaryName());
         params.add(appointment.getBeginDateTime());
         params.add(appointment.getClientName());
@@ -72,7 +73,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
      */
     public boolean removeAppointment(LocalDateTime datetime, String clientName) throws SQLException{
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         params.add(datetime);
         params.add(clientName);
 
@@ -88,7 +89,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
         ArrayList<Appointment> appointments = new ArrayList<>();
         Appointment appRes;
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         params.add(clientName);
 
         ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous r INNER JOIN veterinaire v ON v.vet_id = r.vet_id WHERE r.rv_client = ?::varchar;", params);
@@ -113,7 +114,7 @@ public class BDDAppointmentDAO implements AppointmentDAO {
 
         int count = 1;
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         params.add(datetime);
         params.add(doctorName);
 
@@ -126,6 +127,29 @@ public class BDDAppointmentDAO implements AppointmentDAO {
         rs.close();
 
         return count == 0;
+    }
+
+    public Appointment getAppointmentByClientNameAndDate(String clientName, LocalDateTime date) {
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(clientName);
+        params.add(date);
+
+        try {
+            ResultSet rs = this.adapterSingleton.find("SELECT * FROM rendezvous where rv_client = ?::varchar and rv_debut = ?::timestamp LIMIT 1", params);
+
+            if (rs.next()) {
+                return new Appointment(
+                        rs.getObject("rv_debut", LocalDateTime.class),
+                        rs.getString("rv_client"),
+                        rs.getString("vet_nom")
+                );
+            }
+            return null;
+
+        } catch (SQLException e) {
+            return null;
+        }
+
     }
 
 }
