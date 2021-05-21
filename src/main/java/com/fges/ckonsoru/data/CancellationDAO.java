@@ -11,9 +11,8 @@ public interface CancellationDAO {
      * get all the cancellations
      *
      * @return the list of all {@link Cancellation}
-     * @throws Exception
      */
-    Collection<Cancellation> getAnnulations() throws Exception;
+    Collection<Cancellation> getAnnulations();
 
     /**
      * note a cancellation
@@ -21,9 +20,7 @@ public interface CancellationDAO {
      * @param date date of the appointment
      * @param clientName client who's removing
      * @return true if the cancellation worked, false
-     * otherwise
-     * @throws Exception
      */
-    boolean setCancellation(LocalDateTime date, String clientName) throws Exception;
+    boolean setCancellation(LocalDateTime date, String clientName);
 
 }

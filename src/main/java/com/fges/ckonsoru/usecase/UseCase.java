@@ -10,17 +10,17 @@ import java.sql.SQLException;
 /**
  * Represents a USECase used by the Menu class as an action. A UseCase has a choice string and a trigger method.
  */
-public abstract class UseCase {
+public interface UseCase {
 
     /**
      * Get the use case choice string
      * @return a string representing the UseCase choice.
      */
-    public abstract String getChoice();
+    String getChoice();
 
     /**
      * Called to trigger the UseCase
      */
-    public abstract void trigger() ;
+    void trigger() ;
 
 }

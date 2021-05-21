@@ -5,11 +5,11 @@ import com.fges.ckonsoru.models.Cancellation;
 
 import java.util.Collection;
 
-public class ListCancellation extends UseCase {
+public class ListCancellation implements UseCase {
 
     CancellationDAO cancellationDAO;
 
-    public ListCancellation(CancellationDAO cancellationDAO){
+    public ListCancellation(CancellationDAO cancellationDAO) {
         this.cancellationDAO = cancellationDAO;
     }
 
@@ -23,18 +23,12 @@ public class ListCancellation extends UseCase {
 
         System.out.println("Liste des annulations");
 
-        try {
-            Collection<Cancellation> cancels = this.cancellationDAO.getAnnulations();
+        Collection<Cancellation> cancels = this.cancellationDAO.getAnnulations();
 
-            for (Cancellation cancel : cancels) {
-                System.out.println(cancel);
-            }
+        for (Cancellation cancel : cancels) {
+            System.out.println(cancel);
         }
-        catch (Exception error) {
-            System.out.println("un problème est survenu " +
-                    "lors de la recherche des annulations");
-            System.out.println(error.getLocalizedMessage());
-        }
+        
 
     }
 }

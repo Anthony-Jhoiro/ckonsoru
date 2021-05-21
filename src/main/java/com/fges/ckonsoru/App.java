@@ -17,6 +17,7 @@ import com.fges.ckonsoru.data.xml.XMLAdapterSingleton;
 import com.fges.ckonsoru.data.xml.XMLAppointmentDAO;
 import com.fges.ckonsoru.data.xml.XMLAvailabilityDAO;
 import com.fges.ckonsoru.data.xml.XMLTimeslotDAO;
+import com.fges.ckonsoru.events.listeners.UpdateWaitingListListener;
 import com.fges.ckonsoru.menu.Menu;
 import com.fges.ckonsoru.usecase.*;
 
@@ -43,6 +44,8 @@ public class App {
         WaitingLineDAO waitingLineDAO = null;
         CancellationDAO cancellationDAO = null;
 
+        // Init DAO
+
         if(percistence.equals("bdd")){
             BDDAdapterSingleton adapterSingleton = BDDAdapterSingleton.getInstance();
             adapterSingleton.init(properties.getProperty("bdd.url"), properties.getProperty("bdd.login"), properties.getProperty("bdd.mdp"));
@@ -63,6 +66,14 @@ public class App {
             System.exit(0);
         }
 
+        // Init observers
+        RemoveAppointment removeAppointment = new RemoveAppointment(appointmentDAO,
+                cancellationDAO, waitingLineDAO);
+
+        UpdateWaitingListListener listener = new UpdateWaitingListListener(waitingLineDAO, cancellationDAO);
+
+        removeAppointment.subscribe(listener);
+
         // initialating the menu
         UseCase[] actions = {
                 new InitWeek(appointmentDAO, timeslotDAO),
@@ -71,8 +82,7 @@ public class App {
                 new ListAppointments(appointmentDAO),
                 new TakeAppointment(availabilityDAO, appointmentDAO),
                 new WaitingList(waitingLineDAO),
-                new RemoveAppointmentV2(appointmentDAO,
-                        cancellationDAO, waitingLineDAO),
+                removeAppointment,
                 new ListCancellation(cancellationDAO)
         };
 
