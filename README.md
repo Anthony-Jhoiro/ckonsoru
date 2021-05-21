@@ -1,5 +1,9 @@
 # Ckonsoru
 
+## Contributors
+- **Anthony Quéré** (dev)
+- **Kilian Debraux** (dev)
+
 ## git
 https://github.com/Anthony-Jhoiro/ckonsoru
 
@@ -11,49 +15,70 @@ Pour lancer le projet (après avoir créé le dossier target) : `mvn package exe
 ## Architecture
 
 ```
-├── README.md
+.
 ├── ckonsoru.iml
 ├── class.puml
 ├── nbactions.xml
 ├── notes.txt
 ├── pom.xml
-└── src
-    └── main
-        ├── java
-        │   └── com
-        │       └── fges
-        │           └── ckonsoru
-        │               ├── App.java
-        │               ├── ConfigLoader.java
-        │               ├── data
-        │               │   ├── AppointmentRepository.java
-        │               │   ├── AvailabilityRepository.java
-        │               │   ├── psql
-        │               │   │   ├── BDDAppointmentRepository.java
-        │               │   │   └── BDDAvaibilityRepository.java
-        │               │   └── xml
-        │               │       ├── XMLAdapter.java
-        │               │       ├── XMLAppointmentRepository.java
-        │               │       └── XMLAvailabilityRepository.java
-        │               ├── menu
-        │               │   └── Menu.java
-        │               ├── models
-        │               │   ├── Appointment.java
-        │               │   ├── Availability.java
-        │               │   └── xml
-        │               │       ├── XMLAppointment.java
-        │               │       ├── XMLAvailability.java
-        │               │       └── XMLFriendly.java
-        │               ├── usecase
-        │               │   ├── ListAppointments.java
-        │               │   ├── ListFreeTimeslotsByDate.java
-        │               │   ├── RemoveAppointment.java
-        │               │   ├── TakeAppointment.java
-        │               │   └── UseCase.java
-        │               └── xmlbdd
-        │                   └── ckonsoru.xml
-        └── resources
-            └── config.properties
+├── README.md
+├── src
+          └── main
+              ├── java
+              │         └── com
+              │             └── fges
+              │                 └── ckonsoru
+              │                     ├── App.java
+              │                     ├── ConfigLoader.java
+              │                     ├── data
+              │                     │         ├── AppointmentDAO.java
+              │                     │         ├── AvailabilityDAO.java
+              │                     │         ├── CancellationDAO.java
+              │                     │         ├── psql
+              │                     │         │         ├── BDDAdapterSingleton.java
+              │                     │         │         ├── BDDAppointmentDAO.java
+              │                     │         │         ├── BDDAvaibilityDAO.java
+              │                     │         │         ├── BDDCancellationDAO.java
+              │                     │         │         ├── BDDTimeslotDAO.java
+              │                     │         │         └── BDDWaitingLineDAO.java
+              │                     │         ├── TimeslotDAO.java
+              │                     │         ├── WaitingLineDAO.java
+              │                     │         └── xml
+              │                     │             ├── XMLAdapterSingleton.java
+              │                     │             ├── XMLAppointmentDAO.java
+              │                     │             ├── XMLAvailabilityDAO.java
+              │                     │             └── XMLTimeslotDAO.java
+              │                     ├── events
+              │                     │         ├── listeners
+              │                     │         │         └── UpdateWaitingListListener.java
+              │                     │         ├── Observable.java
+              │                     │         └── Observer.java
+              │                     ├── menu
+              │                     │         └── Menu.java
+              │                     ├── models
+              │                     │         ├── Appointment.java
+              │                     │         ├── Availability.java
+              │                     │         ├── Cancellation.java
+              │                     │         ├── Timeslot.java
+              │                     │         ├── WaitingLineSpot.java
+              │                     │         └── xml
+              │                     │             ├── XMLAppointment.java
+              │                     │             ├── XMLAvailability.java
+              │                     │             └── XMLFriendly.java
+              │                     ├── usecase
+              │                     │         ├── InitWeek.java
+              │                     │         ├── ListAppointments.java
+              │                     │         ├── ListCancellation.java
+              │                     │         ├── ListFreeTimeslotsByDate.java
+              │                     │         ├── ListFreeTimeslotsByDateV2.java
+              │                     │         ├── RemoveAppointment.java
+              │                     │         ├── TakeAppointment.java
+              │                     │         ├── UseCase.java
+              │                     │         └── WaitingList.java
+              │                     └── xmlbdd
+              │                         └── ckonsoru.xml
+              └── resources
+                  └── config.properties
 ```
 
 Notre architecture se décompose en différents modules comme suit :
@@ -67,6 +92,8 @@ Notre architecture se décompose en différents modules comme suit :
 4. App : la classe App est la classe principale de l'application. C'est elle qui choisis entre postgre et xml en fonction des properties et c'est elle qui crée le menu pour que l'utilisateur puisse effectuer les actions
 
 5. models : dans le module "models" sont rangée toutes les classes correspondant aux informations que l'on manipule. Cela permet de manipuler plus facilement ces données (par exemple pour formater des dates).
+
+6. events : contenant la partie evenementielle de l'application
 
 ## Notre volonté de SOLID
 A la base nous voulions créer une application très propre avec le code le plus extensible et lisible possible. Mais avec le temps impartit et la méthode de traitement des données dans le sujet, cela s'est révélé impossible.
